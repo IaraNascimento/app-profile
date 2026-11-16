@@ -1,0 +1,9 @@
+<h1>Página de Perfil Profissional</h1>
+
+<button type="button" (click)="login()" [disabled]="loading">
+  {{ loading ? "Entrando..." : "Entrar com Google" }}
+</button>
+
+@if (errorMessage) {
+  <p>{{ errorMessage }}</p>
+}
