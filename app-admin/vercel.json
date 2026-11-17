@@ -1,6 +1,5 @@
 {
   "version": 2,
-  "name": "app-admin",
   "rewrites": [
     {
       "source": "/(.*)",
