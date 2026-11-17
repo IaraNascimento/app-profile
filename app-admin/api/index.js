@@ -1,7 +1,6 @@
 export default async function handler(req, res) {
   try {
-    const { reqHandler } =
-      await import("../dist/app-profile/server/server.mjs");
+    const { reqHandler } = await import("../dist/app-admin/server/server.mjs");
 
     return reqHandler(req, res);
   } catch (error) {
