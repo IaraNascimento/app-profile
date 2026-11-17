@@ -1,0 +1,76 @@
+
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isOwner(data) {
+      return isAuthenticated()
+        && data.userId == request.auth.uid;
+    }
+
+    // Verifica se o perfil está registrado
+    // no índice público de slugs.
+
+    function isPublicPage(pageId) {
+      return exists(
+        /databases/$(database)/documents/page-slugs/$(pageId)
+      )
+      && get(
+        /databases/$(database)/documents/page-slugs/$(pageId)
+      ).data.pageId == pageId
+      && get(
+        /databases/$(database)/documents/page-slugs/$(pageId)
+      ).data.userId == resource.data.userId;
+    }
+
+    match /pages/{pageId} {
+
+      // Leitura pública somente de perfis
+      // registrados no índice de slugs.
+      // O proprietário também pode consultar seus perfis.
+      allow get: if isOwner(resource.data)
+        || isPublicPage(pageId);
+
+      // Listagem restrita aos próprios perfis.
+      allow list: if isOwner(resource.data);
+
+      // Criar perfil somente para o próprio usuário.
+      allow create: if isAuthenticated()
+        && request.resource.data.userId == request.auth.uid;
+
+      // Atualizar somente os próprios perfis.
+      // Não permite transferir a propriedade.
+      allow update: if isOwner(resource.data)
+        && request.resource.data.userId == resource.data.userId;
+
+      // Excluir somente os próprios perfis.
+      allow delete: if isOwner(resource.data);
+    }
+
+    match /page-slugs/{slug} {
+
+      // Consultar um slug individual publicamente.
+      // Necessário para resolver a URL do perfil.
+      allow get: if true;
+
+      // Não permitir listar todos os slugs.
+      allow list: if false;
+
+      // Reservar slug somente para o próprio usuário.
+      allow create: if isAuthenticated()
+        && request.resource.data.userId == request.auth.uid
+        && request.resource.data.pageId is string;
+
+      // Slugs não podem ser sobrescritos.
+      allow update: if false;
+
+      // Liberar exclusão somente ao proprietário.
+      allow delete: if isOwner(resource.data);
+    }
+  }
+}

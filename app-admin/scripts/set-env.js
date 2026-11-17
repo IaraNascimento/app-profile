@@ -3,7 +3,7 @@ const path = require("path");
 const dotenv = require("dotenv");
 
 dotenv.config({
-  path: ".env",
+  path: path.resolve(process.cwd(), ".env"),
 });
 
 const config = {
@@ -21,6 +21,12 @@ const config = {
 
 const output = `export const environment = ${JSON.stringify(config, null, 2)};`;
 
-fs.writeFileSync(path.resolve("src/environments/environment.ts"), output);
+const outputPath = path.resolve(
+  process.cwd(),
+  "src/environments/environment.ts",
+);
 
-console.log("Environment generated");
+fs.mkdirSync(path.dirname(outputPath), { recursive: true });
+fs.writeFileSync(outputPath, output);
+
+console.log("Environment generated:", outputPath);
