@@ -4,10 +4,11 @@
   "scripts": {
     "ng": "ng",
     "start": "node scripts/set-env.js && ng serve",
-    "build": "node scripts/set-env.js && ng build && npm run serve:ssr:app-admin",
+    "build": "node scripts/set-env.js && ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "serve:ssr:app-admin": "node dist/app-admin/server/server.mjs"
+    "serve:ssr:app-admin": "node dist/app-admin/server/server.mjs",
+    "start:prod": "npm run build && npm run serve:ssr:app-admin"
   },
   "private": true,
   "dependencies": {
