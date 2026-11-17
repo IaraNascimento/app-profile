@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "node scripts/set-env.js && ng serve",
-    "build": "node scripts/set-env.js && ng build",
+    "build": "node scripts/set-env.js && ng build && npm run serve:ssr:app-admin",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "serve:ssr:app-admin": "node dist/app-admin/server/server.mjs"
