@@ -1,9 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
-import { doc, getDocFromServer } from "firebase/firestore";
-import { db } from "../../config/firebase";
-
 import { getPageBySlug } from "../../services/page.service";
 import type { Page as PageType } from "../../types/page";
 
@@ -15,23 +12,6 @@ export function Profile() {
   const [page, setPage] = useState<PageType | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
-
-  useEffect(() => {
-    const testConnection = async () => {
-      try {
-        const result = await getDocFromServer(
-          doc(db, "page-slugs", "iara-nascimento-sztybe-fe"),
-        );
-
-        console.log("Firestore connected:", result.exists());
-        console.log("Slug data:", result.data());
-      } catch (error) {
-        console.error("Firestore connection test:", error);
-      }
-    };
-
-    testConnection();
-  }, []);
 
   useEffect(() => {
     let active = true;

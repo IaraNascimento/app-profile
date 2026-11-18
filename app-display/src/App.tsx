@@ -1,14 +1,9 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import { Profile } from "./pages/Profile/Profile";
+import { NotFound } from "./pages/NotFound/NotFound";
 
-function NotFound() {
-  return (
-    <main className="profile-state">
-      <h2>Página não encontrada</h2>
-    </main>
-  );
-}
+import "./App.scss";
 
 function App() {
   return (
