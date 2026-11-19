@@ -90,9 +90,22 @@
         @for (page of filteredPages; track page.id) {
           <article class="page-card">
             <div class="page-card-header">
-              <h3>{{ page.name }}</h3>
-
-              <span class="page-slug"> /{{ page.url }} </span>
+              <div>
+                <h3>{{ page.name }}</h3>
+                <span class="page-slug"> /{{ page.url }} </span>
+              </div>
+              <div>
+                <a
+                  class="field-link"
+                  [href]="getDefaultUrl(page.url)"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <button type="button" class="button button--success">
+                    Ver
+                  </button>
+                </a>
+              </div>
             </div>
 
             <div class="page-details">

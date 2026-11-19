@@ -175,6 +175,10 @@ export class PageListComponent implements OnInit {
     return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
   }
 
+  getDefaultUrl(url: string): string {
+    return `https://app-profile-display.vercel.app/${encodeURIComponent(url)}`;
+  }
+
   async logout(): Promise<void> {
     await this.authService.logout();
     await this.router.navigate(['/login']);

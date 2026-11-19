@@ -92,6 +92,9 @@
 }
 
 .page-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   padding-bottom: $spacing-4;
   border-bottom: $border-width-default solid $color-border-soft;
 
