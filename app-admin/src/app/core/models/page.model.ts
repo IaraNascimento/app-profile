@@ -1,6 +1,16 @@
+export interface PageColors {
+  screenBackgroundColor: string;
+  cardBackgroundColor: string;
+  cardBorderColor: string;
+  nameColor: string;
+  labelColor: string;
+  valueColor: string;
+}
+
 export interface Page {
   id?: string;
   userId: string;
+  userName: string;
 
   name: string;
   url: string;
@@ -34,6 +44,8 @@ export interface Page {
   address: string;
 
   services: string[];
+
+  colors?: PageColors;
 
   createdAt?: number;
   updatedAt?: number;

@@ -6,223 +6,91 @@
   <p>Carregando...</p>
 } @else {
   <form [formGroup]="form" (ngSubmit)="save()">
-    <fieldset>
-      <legend>Informações principais</legend>
+    @for (section of sections; track section.title) {
+      <fieldset>
+        <legend>{{ section.title }}</legend>
 
-      <label for="name">Nome</label>
-      <input
-        id="name"
-        type="text"
-        formControlName="name"
-        placeholder="ex: Fulane da Silva Sauro"
-      />
+        @if (section.type === "services") {
+          <label for="serviceInput">Adicionar serviço</label>
 
-      <label for="url">URL</label>
-      <input
-        id="url"
-        type="text"
-        formControlName="url"
-        placeholder="ex: fulane-silva-sauro"
-      />
-
-      <label for="profession">Profissão</label>
-      <input
-        id="profession"
-        type="text"
-        formControlName="profession"
-        placeholder="ex: Dentista"
-      />
-    </fieldset>
-
-    <fieldset>
-      <legend>Conteúdo</legend>
-
-      <div>
-        <label>
-          <input type="checkbox" formControlName="showDescription" />
-          Mostrar Descrição
-        </label>
-
-        @if (form.controls.showDescription.value) {
-          <label for="description">Descrição</label>
-          <textarea
-            id="description"
-            formControlName="description"
-            placeholder="Aqui vai o resumo do perfil profissional..."
-          ></textarea>
-        }
-      </div>
-
-      <div>
-        <label>
-          <input type="checkbox" formControlName="showTitle" />
-          Mostrar Título
-        </label>
-
-        @if (form.controls.showTitle.value) {
-          <label for="title">Título</label>
-          <textarea
-            id="title"
-            formControlName="title"
-            placeholder="ex: Atendimento humanizado"
-          ></textarea>
-        }
-      </div>
-
-      <div>
-        <label>
-          <input type="checkbox" formControlName="showSubtitle" />
-          Mostrar Subtítulo
-        </label>
-
-        @if (form.controls.showSubtitle.value) {
-          <label for="subtitle">Subtítulo</label>
-          <textarea
-            id="subtitle"
-            formControlName="subtitle"
-            placeholder="ex: Oferecemos diversos serviços de forma profissional e com preços que cabem no seu bolso."
-          ></textarea>
-        }
-      </div>
-    </fieldset>
-
-    <fieldset>
-      <legend>Contato e redes sociais</legend>
-
-      <div>
-        <label>
-          <input type="checkbox" formControlName="showLinkedIn" />
-          Mostrar LinkedIn
-        </label>
-
-        @if (form.controls.showLinkedIn.value) {
-          <label for="linkedIn">LinkedIn URL</label>
           <input
-            id="linkedIn"
+            id="serviceInput"
             type="text"
-            formControlName="linkedIn"
-            placeholder="ex: https://www.linkedin.com/in/fulane-silva-sauro/"
+            (input)="serviceInput = $any($event.target).value"
+            (keydown.enter)="$event.preventDefault(); addService()"
+            placeholder="ex: Obturação"
           />
-        }
-      </div>
 
-      <div>
-        <label>
-          <input type="checkbox" formControlName="showInstagram" />
-          Mostrar Instagram
-        </label>
+          <button type="button" (click)="addService()">Adicionar</button>
 
-        @if (form.controls.showInstagram.value) {
-          <label for="instagram">Instagram</label>
-          <input
-            id="instagram"
-            type="text"
-            formControlName="instagram"
-            placeholder="ex: @fulane-silva-sauro"
-          />
-        }
-      </div>
-
-      <div>
-        <label>
-          <input type="checkbox" formControlName="showWhatsApp" />
-          Mostrar WhatsApp
-        </label>
-
-        @if (form.controls.showWhatsApp.value) {
-          <label for="whatsApp">WhatsApp</label>
-          <input
-            id="whatsApp"
-            type="text"
-            formControlName="whatsApp"
-            placeholder="ex: +55 (11) 91234-5678"
-          />
-        }
-      </div>
-
-      <div>
-        <label>
-          <input type="checkbox" formControlName="showBusinessPhone" />
-          Mostrar Telefone Comercial
-        </label>
-
-        @if (form.controls.showBusinessPhone.value) {
-          <label for="businessPhone">Telefone Comercial</label>
-          <input
-            id="businessPhone"
-            type="text"
-            formControlName="businessPhone"
-            placeholder="ex: +55 (11) 1234-5678"
-          />
-        }
-      </div>
-
-      <div>
-        <label>
-          <input type="checkbox" formControlName="showEmail" />
-          Mostrar E-mail
-        </label>
-
-        @if (form.controls.showEmail.value) {
-          <label for="email">E-mail</label>
-          <input
-            id="email"
-            type="email"
-            formControlName="email"
-            placeholder="ex: fulane-silva-sauro@gmail.com"
-          />
-        }
-      </div>
-
-      <div>
-        <label>
-          <input type="checkbox" formControlName="showAddress" />
-          Mostrar Endereço
-        </label>
-
-        @if (form.controls.showAddress.value) {
-          <label for="address">Endereço</label>
-          <input
-            id="address"
-            type="text"
-            formControlName="address"
-            placeholder="ex: Avenida Paulista, 1234, São Paulo - SP, Brasil"
-          />
-        }
-      </div>
-    </fieldset>
-
-    <fieldset>
-      <legend>Serviços</legend>
-
-      <label for="serviceInput">Adicionar serviço</label>
-
-      <input
-        id="serviceInput"
-        type="text"
-        (input)="serviceInput = $any($event.target).value"
-        (keydown.enter)="$event.preventDefault(); addService()"
-        placeholder="ex: Obturação"
-      />
-
-      <button type="button" (click)="addService()">Adicionar</button>
-
-      @if (services.length > 0) {
-        <ul>
-          @for (service of services; track $index) {
-            <li>
-              {{ service }}
-
-              <button type="button" (click)="removeService($index)">
-                Remover
-              </button>
-            </li>
+          @if (services.length > 0) {
+            <ul>
+              @for (service of services; track $index) {
+                <li>
+                  {{ service }}
+                  <button type="button" (click)="removeService($index)">
+                    Remover
+                  </button>
+                </li>
+              }
+            </ul>
+          } @else {
+            <p>Nenhum serviço adicionado.</p>
           }
-        </ul>
-      } @else {
-        <p>Nenhum serviço adicionado.</p>
-      }
-    </fieldset>
+        } @else if (section.type === "colors") {
+          <p>{{ section.description }}</p>
+
+          <div formGroupName="colors">
+            @for (field of section.fields ?? []; track field.key) {
+              <div class="color-field">
+                <label [for]="field.key">
+                  {{ field.label }}
+                </label>
+
+                <input
+                  [id]="field.key"
+                  type="text"
+                  [formControlName]="field.key"
+                  [placeholder]="field.placeholder"
+                />
+              </div>
+            }
+          </div>
+        } @else {
+          @for (field of section.fields ?? []; track field.key) {
+            <div>
+              @if (field.show) {
+                <label>
+                  <input type="checkbox" [formControlName]="field.show" />
+                  {{ field.showLabel }}
+                </label>
+              }
+
+              @if (!field.show || isFieldVisible(field.show)) {
+                <label [for]="field.key">
+                  {{ field.label }}
+                </label>
+
+                @if (field.multiline) {
+                  <textarea
+                    [id]="field.key"
+                    [formControlName]="field.key"
+                    [placeholder]="field.placeholder"
+                  ></textarea>
+                } @else {
+                  <input
+                    [id]="field.key"
+                    [type]="field.type || 'text'"
+                    [formControlName]="field.key"
+                    [placeholder]="field.placeholder"
+                  />
+                }
+              }
+            </div>
+          }
+        }
+      </fieldset>
+    }
 
     <footer>
       <button type="submit" [disabled]="loading">

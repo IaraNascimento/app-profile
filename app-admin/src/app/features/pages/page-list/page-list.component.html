@@ -15,64 +15,69 @@
     <p>Comece criando sua primeira página de perfil profissional!</p>
   </section>
 } @else {
-  <section>
-    @for (page of pages; track page.id) {
-      <article>
-        <h3>{{ page.name }}</h3>
+  <section class="filters">
+    <label for="searchField">Pesquisar em:</label>
 
-        <p>URL: {{ page.url }}</p>
-        <p>Profissão: {{ page.profession }}</p>
+    <select id="searchField" name="searchField" [(ngModel)]="searchField">
+      @for (field of searchFields; track field.value) {
+        <option [value]="field.value">
+          {{ field.label }}
+        </option>
+      }
+    </select>
 
-        @if (page.showDescription) {
-          <p>Descrição: {{ page.description }}</p>
-        }
+    <label for="searchValue">Buscar:</label>
 
-        @if (page.showTitle) {
-          <p>Título: {{ page.title }}</p>
-        }
+    <input
+      id="searchValue"
+      name="searchValue"
+      type="search"
+      placeholder="buscar..."
+      [(ngModel)]="searchValue"
+    />
 
-        @if (page.showSubtitle) {
-          <p>Subtítulo: {{ page.subtitle }}</p>
-        }
-
-        @if (page.showLinkedIn) {
-          <p>LinkedIn: {{ page.linkedIn }}</p>
-        }
-
-        @if (page.showInstagram) {
-          <p>Instagram: {{ page.instagram }}</p>
-        }
-
-        @if (page.showWhatsApp) {
-          <p>WhatsApp: {{ page.whatsApp }}</p>
-        }
-
-        @if (page.showBusinessPhone) {
-          <p>Telefone comercial: {{ page.businessPhone }}</p>
-        }
-
-        @if (page.showEmail) {
-          <p>E-mail: {{ page.email }}</p>
-        }
-
-        @if (page.showAddress) {
-          <p>Endereço: {{ page.address }}</p>
-        }
-
-        @if (page.services.length) {
-          <h4>Serviços</h4>
-
-          <ul>
-            @for (service of page.services; track $index) {
-              <li>{{ service }}</li>
-            }
-          </ul>
-        }
-
-        <button type="button" (click)="editPage(page.id!)">Editar</button>
-
-        <button type="button" (click)="deletePage(page.id!)">Deletar</button>
-      </article>
+    @if (searchValue || searchField !== "all") {
+      <button type="button" (click)="clearSearch()">Limpar filtros</button>
     }
   </section>
+
+  @if (filteredPages.length === 0) {
+    <section>
+      <h2>Nenhum resultado encontrado.</h2>
+      <p>Tente alterar os filtros ou os termos da busca.</p>
+    </section>
+  } @else {
+    <section>
+      @for (page of filteredPages; track page.id) {
+        <article>
+          <h3>{{ page.name }}</h3>
+
+          @for (field of searchFields; track field.value) {
+            @if (isFieldVisible(page, field.show)) {
+              @if (field.value === "services") {
+                @if (page.services.length) {
+                  <h4>{{ field.label }}</h4>
+
+                  <ul>
+                    @for (service of page.services; track $index) {
+                      <li>{{ service }}</li>
+                    }
+                  </ul>
+                }
+              } @else {
+                <p>
+                  {{ field.label }}:
+                  {{ page[field.value] }}
+                </p>
+              }
+            }
+          }
+
+          <button type="button" (click)="editPage(page.id!)">Editar</button>
+
+          <button type="button" (click)="deletePage(page.id!)">Deletar</button>
+        </article>
+      }
+    </section>
+  }
 }

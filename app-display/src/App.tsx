@@ -1,5 +1,6 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
+import { List } from "./pages/List/List";
 import { Profile } from "./pages/Profile/Profile";
 import { NotFound } from "./pages/NotFound/NotFound";
 
@@ -14,6 +15,7 @@ function App() {
       }}
     >
       <Routes>
+        <Route path="/" element={<List />} />
         <Route path="/:slug" element={<Profile />} />
         <Route path="*" element={<NotFound />} />
       </Routes>

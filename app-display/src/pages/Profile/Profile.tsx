@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, type CSSProperties } from "react";
 import { useParams } from "react-router-dom";
 
 import { getPageBySlug } from "../../services/page.service";
 import type { Page as PageType } from "../../types/page";
+import { profileFields } from "../../config/profile-fields";
 
 import "./Profile.scss";
 
@@ -12,6 +13,22 @@ export function Profile() {
   const [page, setPage] = useState<PageType | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
+
+  const colors = page?.colors;
+
+  const profileStyles: CSSProperties = {
+    "--screen-background-color": colors?.screenBackgroundColor || "#f8fafc",
+
+    "--card-background-color": colors?.cardBackgroundColor || "#ffffff",
+
+    "--card-border-color": colors?.cardBorderColor || "transparent",
+
+    "--name-color": colors?.nameColor || "#1e293b",
+
+    "--label-color": colors?.labelColor || "#334155",
+
+    "--value-color": colors?.valueColor || "#475569",
+  } as CSSProperties;
 
   useEffect(() => {
     let active = true;
@@ -26,6 +43,7 @@ export function Profile() {
       try {
         setLoading(true);
         setError(false);
+        setPage(null);
 
         const result = await getPageBySlug(slug);
 
@@ -52,6 +70,28 @@ export function Profile() {
     };
   }, [slug]);
 
+  function isFieldVisible(field: (typeof profileFields)[number]): boolean {
+    if (!field.show) {
+      return true;
+    }
+
+    return page?.[field.show] === true;
+  }
+
+  function renderValue(value: unknown) {
+    if (Array.isArray(value)) {
+      return (
+        <ul>
+          {value.map((item, index) => (
+            <li key={`${String(item)}-${index}`}>{String(item)}</li>
+          ))}
+        </ul>
+      );
+    }
+
+    return String(value);
+  }
+
   if (loading) {
     return (
       <main className="profile-state">
@@ -70,44 +110,41 @@ export function Profile() {
   }
 
   return (
-    <main className="profile-container">
+    <main className="profile-container" style={profileStyles}>
       <article className="profile">
         <h3>{page.name}</h3>
 
-        <p>URL: {page.url}</p>
-        <p>Profissão: {page.profession}</p>
+        {profileFields.map((field) => {
+          if (!isFieldVisible(field)) {
+            return null;
+          }
 
-        {page.showDescription && <p>Descrição: {page.description}</p>}
+          const value = page[field.value];
 
-        {page.showTitle && <p>Título: {page.title}</p>}
+          if (
+            value === null ||
+            value === undefined ||
+            value === "" ||
+            (Array.isArray(value) && value.length === 0)
+          ) {
+            return null;
+          }
 
-        {page.showSubtitle && <p>Subtítulo: {page.subtitle}</p>}
-
-        {page.showLinkedIn && <p>LinkedIn: {page.linkedIn}</p>}
-
-        {page.showInstagram && <p>Instagram: {page.instagram}</p>}
-
-        {page.showWhatsApp && <p>WhatsApp: {page.whatsApp}</p>}
-
-        {page.showBusinessPhone && (
-          <p>Telefone comercial: {page.businessPhone}</p>
-        )}
-
-        {page.showEmail && <p>E-mail: {page.email}</p>}
-
-        {page.showAddress && <p>Endereço: {page.address}</p>}
-
-        {page.services?.length > 0 && (
-          <>
-            <h4>Serviços</h4>
-
-            <ul>
-              {page.services.map((service, index) => (
-                <li key={`${service}-${index}`}>{service}</li>
-              ))}
-            </ul>
-          </>
-        )}
+          return (
+            <div key={field.value}>
+              {Array.isArray(value) ? (
+                <>
+                  <h4>{field.label}</h4>
+                  {renderValue(value)}
+                </>
+              ) : (
+                <p>
+                  <span>{field.label}:</span> {renderValue(value)}
+                </p>
+              )}
+            </div>
+          );
+        })}
       </article>
     </main>
   );

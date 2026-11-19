@@ -1,14 +1,16 @@
 import { Component, OnInit, inject } from "@angular/core";
+import { FormsModule } from "@angular/forms";
 import { Router, RouterLink } from "@angular/router";
 
 import { Page } from "../../../core/models/page.model";
+import { SearchField } from "../../../core/models/search-field";
 import { PageService } from "../../../core/services/page.service";
 import { AuthService } from "../../../core/services/auth.service";
 
 @Component({
   selector: "app-page-list",
   standalone: true,
-  imports: [RouterLink],
+  imports: [RouterLink, FormsModule],
   templateUrl: "./page-list.component.html",
   styleUrl: "./page-list.component.scss",
 })
@@ -19,6 +21,89 @@ export class PageListComponent implements OnInit {
 
   pages: Page[] = [];
   loading = true;
+
+  searchValue = "";
+  searchField = "all";
+
+  searchFields: SearchField[] = [
+    { value: "name", label: "Nome", show: null },
+    { value: "url", label: "URL", show: null },
+    { value: "profession", label: "Profissão", show: null },
+    { value: "description", label: "Descrição", show: "showDescription" },
+    { value: "title", label: "Título", show: "showTitle" },
+    { value: "subtitle", label: "Subtítulo", show: "showSubtitle" },
+    { value: "linkedIn", label: "LinkedIn", show: "showLinkedIn" },
+    { value: "instagram", label: "Instagram", show: "showInstagram" },
+    { value: "whatsApp", label: "WhatsApp", show: "showWhatsApp" },
+    {
+      value: "businessPhone",
+      label: "Telefone comercial",
+      show: "showBusinessPhone",
+    },
+    { value: "email", label: "E-mail", show: "showEmail" },
+    { value: "address", label: "Endereço", show: "showAddress" },
+    { value: "services", label: "Serviços", show: null },
+  ];
+
+  get filteredPages(): Page[] {
+    const search = this.normalize(this.searchValue);
+
+    if (!search) {
+      return this.pages;
+    }
+
+    return this.pages.filter((page) => {
+      const fields =
+        this.searchField === "all"
+          ? this.searchFields
+          : this.searchFields.filter(
+              (field) => field.value === this.searchField,
+            );
+
+      return fields.some(({ value }) => {
+        const fieldValue = page[value as keyof Page];
+
+        return this.matches(fieldValue, search);
+      });
+    });
+  }
+
+  private matches(value: unknown, search: string): boolean {
+    if (value === null || value === undefined) {
+      return false;
+    }
+
+    if (Array.isArray(value)) {
+      return value.some((item) => this.matches(item, search));
+    }
+
+    if (typeof value === "object") {
+      return Object.values(value).some((item) => this.matches(item, search));
+    }
+
+    return this.normalize(String(value)).includes(search);
+  }
+
+  private normalize(value: string): string {
+    return value
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .toLowerCase()
+      .trim();
+  }
+
+  isFieldVisible(page: Page, show: string | null): boolean {
+    if (!show) {
+      return true;
+    }
+
+    return page[show as keyof Page] === true;
+  }
+
+  clearSearch(): void {
+    this.searchValue = "";
+    this.searchField = "all";
+  }
 
   async ngOnInit(): Promise<void> {
     await this.loadPages();
