@@ -43,7 +43,7 @@
   } @else {
     <section class="filters">
       <div class="form-control">
-        <label for="searchField">Pesquisar em:</label>
+        <label for="searchField">Pesquisar em</label>
 
         <select id="searchField" name="searchField" [(ngModel)]="searchField">
           @for (field of searchFields; track field.value) {
@@ -55,26 +55,24 @@
       </div>
 
       <div class="form-control search-input">
-        <label for="searchValue">Buscar:</label>
+        <label for="searchValue">Buscar</label>
 
         <input
           id="searchValue"
           name="searchValue"
           type="search"
-          placeholder="Buscar..."
+          placeholder="Procurar por..."
           [(ngModel)]="searchValue"
         />
       </div>
 
-      @if (searchValue || searchField !== "all") {
-        <button
-          type="button"
-          class="button button--ghost clear-button"
-          (click)="clearSearch()"
-        >
-          Limpar filtros
-        </button>
-      }
+      <button
+        type="button"
+        class="button button--outline clear-button"
+        (click)="clearSearch()"
+      >
+        Limpar filtros
+      </button>
     </section>
 
     @if (filteredPages.length === 0) {

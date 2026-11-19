@@ -27,11 +27,10 @@ export class PageListComponent implements OnInit {
 
   searchFields: SearchField[] = [
     { value: 'name', label: 'Nome', show: null },
-    { value: 'url', label: 'URL', show: null },
     { value: 'profession', label: 'Profissão', show: null },
-    { value: 'description', label: 'Descrição', show: 'showDescription' },
     { value: 'title', label: 'Título', show: 'showTitle' },
     { value: 'subtitle', label: 'Subtítulo', show: 'showSubtitle' },
+    { value: 'description', label: 'Descrição', show: 'showDescription' },
     { value: 'linkedIn', label: 'LinkedIn', show: 'showLinkedIn' },
     { value: 'instagram', label: 'Instagram', show: 'showInstagram' },
     { value: 'whatsApp', label: 'WhatsApp', show: 'showWhatsApp' },

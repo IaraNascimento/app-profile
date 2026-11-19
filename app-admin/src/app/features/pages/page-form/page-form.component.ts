@@ -70,14 +70,6 @@ export class PageFormComponent implements OnInit {
       type: 'fields',
       fields: [
         {
-          key: 'description',
-          label: 'Descrição',
-          show: 'showDescription',
-          showLabel: 'Mostrar Descrição',
-          placeholder: 'Aqui vai o resumo do perfil profissional...',
-          multiline: true,
-        },
-        {
           key: 'title',
           label: 'Título',
           show: 'showTitle',
@@ -92,6 +84,14 @@ export class PageFormComponent implements OnInit {
           showLabel: 'Mostrar Subtítulo',
           placeholder:
             'ex: Oferecemos diversos serviços de forma profissional e com preços que cabem no seu bolso.',
+          multiline: true,
+        },
+        {
+          key: 'description',
+          label: 'Descrição',
+          show: 'showDescription',
+          showLabel: 'Mostrar Descrição',
+          placeholder: 'Aqui vai o resumo do perfil profissional...',
           multiline: true,
         },
       ],

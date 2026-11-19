@@ -16,14 +16,14 @@ export interface Page {
   url: string;
   profession: string;
 
-  showDescription: boolean;
-  description: string;
-
   showTitle: boolean;
   title: string;
 
   showSubtitle: boolean;
   subtitle: string;
+
+  showDescription: boolean;
+  description: string;
 
   showLinkedIn: boolean;
   linkedIn: string;
