@@ -1,0 +1,407 @@
+@use "../../../../styles/index" as *;
+
+.page-form {
+  min-height: 100vh;
+  padding: $spacing-8;
+
+  background: $color-background;
+  color: $color-text;
+  font-family: $font-family-base;
+}
+
+.form-header {
+  max-width: 900px;
+  margin: 0 auto $spacing-8;
+
+  .form-eyebrow {
+    display: inline-block;
+    margin-bottom: $spacing-2;
+
+    color: $color-primary;
+    font-size: $font-size-xs;
+    font-weight: $font-weight-medium;
+    letter-spacing: $letter-spacing-wide;
+    text-transform: uppercase;
+  }
+
+  h1 {
+    margin: 0;
+    color: $color-text;
+    font-size: $font-size-2xl;
+    line-height: $line-height-heading;
+  }
+
+  p {
+    margin: $spacing-2 0 0;
+    color: $color-text-secondary;
+    font-size: $font-size-sm;
+    line-height: $line-height-base;
+  }
+}
+
+.profile-form {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-5;
+
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.form-section {
+  min-width: 0;
+  margin: 0;
+  padding: $spacing-6;
+
+  background: $color-surface;
+  border: $border-width-default solid $color-border-soft;
+  border-radius: $radius-xl;
+  box-shadow: $shadow-card;
+
+  legend {
+    padding: $spacing-2 $spacing-4;
+
+    background: $color-primary-light;
+    border: $border-width-default solid $color-primary-border;
+    border-radius: $radius-pill;
+
+    color: $color-text;
+    font-size: $font-size-sm;
+    font-weight: $font-weight-medium;
+  }
+}
+
+.section-description {
+  margin: 0 0 $spacing-5;
+
+  color: $color-text-secondary;
+  font-size: $font-size-sm;
+  line-height: $line-height-base;
+}
+
+// Campos
+
+.fields-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: $spacing-5;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-2;
+  min-width: 0;
+
+  > label {
+    color: $color-text;
+    font-size: $font-size-sm;
+    font-weight: $font-weight-medium;
+  }
+
+  input:not([type="checkbox"]),
+  textarea {
+    width: 100%;
+    min-width: 0;
+    padding: $spacing-3 $spacing-4;
+
+    background: $color-surface-soft;
+    border: $border-width-default solid $color-border;
+    border-radius: $radius-md;
+
+    color: $color-text;
+    font-family: $font-family-base;
+    font-size: $font-size-base;
+    line-height: $line-height-base;
+
+    transition:
+      border-color $transition-fast,
+      box-shadow $transition-fast,
+      background-color $transition-fast;
+
+    &::placeholder {
+      color: $color-text-muted;
+    }
+
+    &:hover:not(:disabled) {
+      border-color: $color-primary-border;
+    }
+
+    &:focus {
+      outline: none;
+      background: $color-surface;
+      border-color: $color-primary;
+      box-shadow: 0 0 0 3px $color-primary-light;
+    }
+
+    &:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+  }
+
+  textarea {
+    min-height: 120px;
+    resize: vertical;
+  }
+}
+
+// Campos de exibição condicional
+
+.checkbox-field {
+  display: inline-flex;
+  align-items: center;
+  gap: $spacing-2;
+
+  margin-bottom: $spacing-1;
+
+  color: $color-text-secondary;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-normal;
+  cursor: pointer;
+
+  input {
+    width: 16px;
+    height: 16px;
+    margin: 0;
+
+    accent-color: $color-primary;
+    cursor: pointer;
+  }
+}
+
+// Serviços
+
+.services-manager {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-5;
+}
+
+.service-input-group {
+  display: flex;
+  align-items: stretch;
+  gap: $spacing-3;
+
+  input {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .button {
+    flex-shrink: 0;
+  }
+}
+
+.services-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $spacing-2;
+
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.service-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: $spacing-2;
+
+  padding: $spacing-2 $spacing-3;
+
+  background: $color-primary-light;
+  border: $border-width-default solid $color-primary-border;
+  border-radius: $radius-pill;
+
+  color: $color-text;
+  font-size: $font-size-xs;
+}
+
+.service-remove {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 20px;
+  height: 20px;
+  padding: 0;
+
+  background: transparent;
+  border: none;
+  border-radius: $radius-pill;
+
+  color: $color-text-secondary;
+  font-size: $font-size-lg;
+  line-height: 1;
+
+  cursor: pointer;
+  transition: $transition-fast;
+
+  &:hover {
+    background: $color-pink;
+    color: $color-error;
+  }
+
+  &:focus-visible {
+    outline: 2px solid $color-primary;
+    outline-offset: 2px;
+  }
+}
+
+.form-hint {
+  margin: 0;
+  color: $color-text-muted;
+  font-size: $font-size-xs;
+}
+
+// Personalização de cores
+
+.color-fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: $spacing-5;
+}
+
+.color-field {
+  input {
+    font-family: monospace;
+  }
+}
+
+// Ações
+
+.form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: $spacing-3;
+
+  padding: $spacing-5;
+
+  background: $color-surface;
+  border: $border-width-default solid $color-border-soft;
+  border-radius: $radius-xl;
+  box-shadow: $shadow-card;
+}
+
+// Estados
+
+.form-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: $spacing-3;
+
+  max-width: 900px;
+  margin: 0 auto;
+  padding: $spacing-12;
+
+  background: $color-surface;
+  border-radius: $radius-xl;
+  box-shadow: $shadow-card;
+
+  p {
+    margin: 0;
+    color: $color-text-secondary;
+    font-size: $font-size-sm;
+  }
+}
+
+.loading-icon {
+  color: $color-primary;
+  font-size: $icon-size;
+  line-height: 1;
+}
+
+.form-error {
+  display: flex;
+  align-items: center;
+  gap: $spacing-3;
+
+  max-width: 900px;
+  margin: $spacing-5 auto 0;
+  padding: $spacing-4;
+
+  background: $color-error-background;
+  border: $border-width-default solid $color-error;
+  border-radius: $radius-md;
+
+  color: $color-error;
+  font-size: $font-size-sm;
+
+  span {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+
+    background: $color-error;
+    border-radius: $radius-pill;
+
+    color: $color-surface;
+    font-weight: $font-weight-bold;
+  }
+}
+
+// Responsividade
+
+@media (max-width: 768px) {
+  .page-form {
+    padding: $spacing-5;
+  }
+
+  .form-header {
+    h1 {
+      font-size: $font-size-xl;
+    }
+  }
+
+  .form-section {
+    padding: $spacing-5;
+  }
+
+  .form-actions {
+    .button {
+      flex: 1;
+    }
+  }
+}
+
+@media (max-width: 540px) {
+  .page-form {
+    padding: $spacing-4;
+  }
+
+  .form-header {
+    margin-bottom: $spacing-5;
+  }
+
+  .fields-grid,
+  .color-fields {
+    grid-template-columns: 1fr;
+  }
+
+  .form-section {
+    padding: $spacing-4;
+  }
+
+  .service-input-group {
+    flex-direction: column;
+
+    .button {
+      width: 100%;
+    }
+  }
+
+  .form-actions {
+    flex-direction: column;
+
+    .button {
+      width: 100%;
+    }
+  }
+}

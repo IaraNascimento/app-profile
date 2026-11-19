@@ -1,83 +1,186 @@
-<header>
-  <h1>Perfis cadastrados</h1>
+<main class="pages-page">
+  <header class="pages-header">
+    <div>
+      <h1>Perfis cadastrados</h1>
+      <p>Gerencie suas páginas profissionais.</p>
+    </div>
 
-  <button type="button" (click)="logout()">sair</button>
-</header>
+    <button type="button" class="button button--outline" (click)="logout()">
+      Sair
+    </button>
+  </header>
 
-<button type="button" routerLink="/main/create">cadastrar novo</button>
+  <div class="pages-actions">
+    <button
+      type="button"
+      class="button button--primary"
+      routerLink="/main/create"
+    >
+      + Cadastrar novo
+    </button>
+  </div>
 
-@if (loading) {
-  <p>Carregando...</p>
-} @else if (pages.length === 0) {
-  <section>
-    <h2>Você ainda não têm perfis cadastrados.</h2>
+  @if (loading) {
+    <section class="empty-state">
+      <p>Carregando...</p>
+    </section>
+  } @else if (pages.length === 0) {
+    <section class="empty-state">
+      <span class="empty-icon">✿</span>
 
-    <p>Comece criando sua primeira página de perfil profissional!</p>
-  </section>
-} @else {
-  <section class="filters">
-    <label for="searchField">Pesquisar em:</label>
+      <h2>Você ainda não tem perfis cadastrados.</h2>
 
-    <select id="searchField" name="searchField" [(ngModel)]="searchField">
-      @for (field of searchFields; track field.value) {
-        <option [value]="field.value">
-          {{ field.label }}
-        </option>
-      }
-    </select>
+      <p>Comece criando sua primeira página de perfil profissional!</p>
 
-    <label for="searchValue">Buscar:</label>
-
-    <input
-      id="searchValue"
-      name="searchValue"
-      type="search"
-      placeholder="buscar..."
-      [(ngModel)]="searchValue"
-    />
-
-    @if (searchValue || searchField !== "all") {
-      <button type="button" (click)="clearSearch()">Limpar filtros</button>
-    }
-  </section>
-
-  @if (filteredPages.length === 0) {
-    <section>
-      <h2>Nenhum resultado encontrado.</h2>
-      <p>Tente alterar os filtros ou os termos da busca.</p>
+      <button
+        type="button"
+        class="button button--primary"
+        routerLink="/main/create"
+      >
+        Criar meu primeiro perfil
+      </button>
     </section>
   } @else {
-    <section>
-      @for (page of filteredPages; track page.id) {
-        <article>
-          <h3>{{ page.name }}</h3>
+    <section class="filters">
+      <div class="form-control">
+        <label for="searchField">Pesquisar em:</label>
 
+        <select id="searchField" name="searchField" [(ngModel)]="searchField">
           @for (field of searchFields; track field.value) {
-            @if (isFieldVisible(page, field.show)) {
-              @if (field.value === "services") {
-                @if (page.services.length) {
-                  <h4>{{ field.label }}</h4>
-
-                  <ul>
-                    @for (service of page.services; track $index) {
-                      <li>{{ service }}</li>
-                    }
-                  </ul>
-                }
-              } @else {
-                <p>
-                  {{ field.label }}:
-                  {{ page[field.value] }}
-                </p>
-              }
-            }
+            <option [value]="field.value">
+              {{ field.label }}
+            </option>
           }
+        </select>
+      </div>
 
-          <button type="button" (click)="editPage(page.id!)">Editar</button>
+      <div class="form-control search-input">
+        <label for="searchValue">Buscar:</label>
 
-          <button type="button" (click)="deletePage(page.id!)">Deletar</button>
-        </article>
+        <input
+          id="searchValue"
+          name="searchValue"
+          type="search"
+          placeholder="Buscar..."
+          [(ngModel)]="searchValue"
+        />
+      </div>
+
+      @if (searchValue || searchField !== "all") {
+        <button
+          type="button"
+          class="button button--ghost clear-button"
+          (click)="clearSearch()"
+        >
+          Limpar filtros
+        </button>
       }
     </section>
+
+    @if (filteredPages.length === 0) {
+      <section class="empty-state">
+        <span class="empty-icon">⌕</span>
+
+        <h2>Nenhum resultado encontrado.</h2>
+
+        <p>Tente alterar os filtros ou os termos da busca.</p>
+      </section>
+    } @else {
+      <section class="pages-list">
+        @for (page of filteredPages; track page.id) {
+          <article class="page-card">
+            <div class="page-card-header">
+              <h3>{{ page.name }}</h3>
+
+              <span class="page-slug"> /{{ page.url }} </span>
+            </div>
+
+            <div class="page-details">
+              @for (field of searchFields; track field.value) {
+                @if (isFieldVisible(page, field.show)) {
+                  @if (field.value === "services") {
+                    @if (page.services.length) {
+                      <div class="page-field services-field">
+                        <h4>{{ field.label }}</h4>
+
+                        <ul>
+                          @for (service of page.services; track $index) {
+                            <li>{{ service }}</li>
+                          }
+                        </ul>
+                      </div>
+                    }
+                  } @else {
+                    <div class="page-field">
+                      <span class="field-label">
+                        {{ field.label }}
+                      </span>
+
+                      @if (field.value === "linkedIn") {
+                        <a
+                          class="field-link"
+                          [href]="page[field.value]"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          {{ page[field.value] }}
+                        </a>
+                      } @else if (field.value === "instagram") {
+                        <a
+                          class="field-link"
+                          [href]="getInstagramUrl(page[field.value])"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          {{ page[field.value] }}
+                        </a>
+                      } @else if (field.value === "whatsApp") {
+                        <a
+                          class="field-link"
+                          [href]="getWhatsAppUrl(page[field.value])"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          {{ page[field.value] }}
+                        </a>
+                      } @else if (field.value === "address") {
+                        <a
+                          class="field-link"
+                          [href]="getMapsUrl(page[field.value])"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          {{ page[field.value] }}
+                        </a>
+                      } @else {
+                        <p>{{ page[field.value] }}</p>
+                      }
+                    </div>
+                  }
+                }
+              }
+            </div>
+
+            <div class="page-card-actions">
+              <button
+                type="button"
+                class="button button--secondary"
+                (click)="editPage(page.id!)"
+              >
+                Editar
+              </button>
+
+              <button
+                type="button"
+                class="button button--danger"
+                (click)="deletePage(page.id!)"
+              >
+                Deletar
+              </button>
+            </div>
+          </article>
+        }
+      </section>
+    }
   }
-}
+</main>

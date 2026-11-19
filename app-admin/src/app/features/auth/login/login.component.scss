@@ -1,0 +1,199 @@
+@use "../../../../styles/index" as *;
+
+:host {
+  font-family: $font-family-base;
+  color: $color-text;
+}
+
+.card {
+  padding: $spacing-8;
+  background: $color-surface;
+  border: 1px solid $color-border;
+  border-radius: $radius-2xl;
+  box-shadow: $shadow-card;
+}
+
+.login-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: $spacing-6;
+  box-sizing: border-box;
+
+  background:
+    radial-gradient(circle at 15% 20%, $color-pink 0, transparent 35%),
+    radial-gradient(circle at 85% 80%, $color-mint 0, transparent 35%),
+    $color-background;
+}
+
+.login-card {
+  width: 100%;
+  max-width: $container-login-width;
+  box-sizing: border-box;
+  padding: $spacing-12 $spacing-9 $spacing-8;
+  text-align: center;
+
+  background: $color-surface;
+  border: 1px solid $color-surface;
+  border-radius: $radius-2xl;
+  box-shadow: $shadow-card;
+}
+
+.login-icon {
+  width: $icon-size;
+  height: $icon-size;
+  margin: 0 auto $spacing-6;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: $color-primary-light;
+  border-radius: $radius-xl;
+
+  span {
+    font-size: 42px;
+    color: $color-primary;
+  }
+}
+
+h1 {
+  margin: 0;
+  font-size: $font-size-2xl;
+  line-height: $line-height-heading;
+  font-weight: $font-weight-bold;
+  color: $color-text;
+}
+
+.subtitle {
+  margin: $spacing-3 0 $spacing-8;
+  color: $color-text-secondary;
+  font-size: $font-size-base;
+  line-height: $line-height-base;
+}
+
+.google-button {
+  width: 100%;
+  min-height: $button-min-height;
+  padding: $spacing-3 $spacing-5;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: $spacing-3;
+
+  border: 1px solid $color-border;
+  border-radius: $radius-lg;
+
+  background: $color-surface;
+  color: $color-text;
+
+  font-size: $font-size-base;
+  font-weight: $font-weight-medium;
+  cursor: pointer;
+
+  transition:
+    background $transition-fast,
+    border-color $transition-fast,
+    transform $transition-fast,
+    box-shadow $transition-fast;
+
+  &:hover:not(:disabled) {
+    background: $color-surface-soft;
+    border-color: $color-primary-border;
+    box-shadow: $shadow-button-hover;
+    transform: translateY(-2px);
+  }
+
+  &:active:not(:disabled) {
+    transform: translateY(0);
+  }
+
+  &:focus-visible {
+    outline: 3px solid $color-primary-border;
+    outline-offset: 3px;
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+.google-icon {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-bold;
+  color: #4285f4;
+}
+
+.error-message {
+  margin: $spacing-5 0 0;
+  padding: $spacing-3;
+  border-radius: $radius-md;
+
+  background: $color-error-background;
+  color: $color-error;
+  font-size: $font-size-sm;
+}
+
+.login-footer {
+  border-top: 1px solid $color-border-soft;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: $spacing-3;
+  margin-top: $spacing-10;
+  padding-top: $spacing-4;
+}
+
+.version {
+  color: $color-text-muted;
+  font-size: $font-size-xs;
+  letter-spacing: $letter-spacing-wide;
+}
+
+.author-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: $spacing-2;
+  padding: $spacing-2 $spacing-4;
+
+  background: $color-surface-soft;
+  border: $border-width-default solid $color-primary-border;
+  border-radius: $radius-pill;
+
+  color: $color-text-secondary;
+  font-size: $font-size-xs;
+  line-height: $line-height-base;
+
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    background $transition-fast,
+    border-color $transition-fast,
+    transform $transition-fast,
+    box-shadow $transition-fast;
+
+  strong {
+    color: $color-primary;
+    font-weight: $font-weight-medium;
+  }
+
+  &:hover {
+    border-color: $color-primary;
+    background: $color-surface-soft;
+    transform: translateY(-2px);
+    box-shadow: $shadow-button-hover;
+  }
+}
+
+@media (max-width: 480px) {
+  .login-card {
+    padding: $spacing-9 $spacing-6 $spacing-8;
+  }
+
+  h1 {
+    font-size: $font-size-xl;
+  }
+}

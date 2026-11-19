@@ -1,117 +1,176 @@
-<h1>
-  {{ isEditing ? "Editando" : "Criando" }}
-</h1>
+<main class="page-form">
+  <header class="form-header">
+    <div>
+      <span class="form-eyebrow"> Perfil profissional </span>
 
-@if (loading) {
-  <p>Carregando...</p>
-} @else {
-  <form [formGroup]="form" (ngSubmit)="save()">
-    @for (section of sections; track section.title) {
-      <fieldset>
-        <legend>{{ section.title }}</legend>
+      <h1>
+        {{ isEditing ? "Editando perfil" : "Criando perfil" }}
+      </h1>
 
-        @if (section.type === "services") {
-          <label for="serviceInput">Adicionar serviço</label>
+      <p>
+        {{
+          isEditing
+            ? "Atualize as informações da sua página."
+            : "Preencha as informações para criar sua página profissional."
+        }}
+      </p>
+    </div>
+  </header>
 
-          <input
-            id="serviceInput"
-            type="text"
-            (input)="serviceInput = $any($event.target).value"
-            (keydown.enter)="$event.preventDefault(); addService()"
-            placeholder="ex: Obturação"
-          />
+  @if (loading) {
+    <section class="form-loading">
+      <span class="loading-icon">✿</span>
+      <p>Carregando...</p>
+    </section>
+  } @else {
+    <form class="profile-form" [formGroup]="form" (ngSubmit)="save()">
+      @for (section of sections; track section.title) {
+        <fieldset class="form-section">
+          <legend>{{ section.title }}</legend>
 
-          <button type="button" (click)="addService()">Adicionar</button>
+          @if (section.type === "services") {
+            <div class="services-manager">
+              <div class="form-field">
+                <label for="serviceInput"> Adicionar serviço </label>
 
-          @if (services.length > 0) {
-            <ul>
-              @for (service of services; track $index) {
-                <li>
-                  {{ service }}
-                  <button type="button" (click)="removeService($index)">
-                    Remover
+                <div class="service-input-group">
+                  <input
+                    id="serviceInput"
+                    type="text"
+                    [(ngModel)]="serviceInput"
+                    [ngModelOptions]="{ standalone: true }"
+                    (keydown.enter)="$event.preventDefault(); addService()"
+                    placeholder="Ex.: Obturação"
+                  />
+
+                  <button
+                    type="button"
+                    class="button button--primary"
+                    (click)="addService()"
+                  >
+                    + Adicionar
                   </button>
-                </li>
-              }
-            </ul>
-          } @else {
-            <p>Nenhum serviço adicionado.</p>
-          }
-        } @else if (section.type === "colors") {
-          <p>{{ section.description }}</p>
-
-          <div formGroupName="colors">
-            @for (field of section.fields ?? []; track field.key) {
-              <div class="color-field">
-                <label [for]="field.key">
-                  {{ field.label }}
-                </label>
-
-                <input
-                  [id]="field.key"
-                  type="text"
-                  [formControlName]="field.key"
-                  [placeholder]="field.placeholder"
-                />
+                </div>
               </div>
-            }
-          </div>
-        } @else {
-          @for (field of section.fields ?? []; track field.key) {
-            <div>
-              @if (field.show) {
-                <label>
-                  <input type="checkbox" [formControlName]="field.show" />
-                  {{ field.showLabel }}
-                </label>
+
+              @if (services.length > 0) {
+                <ul class="services-list">
+                  @for (service of services; track $index) {
+                    <li class="service-tag">
+                      <span>{{ service }}</span>
+
+                      <button
+                        type="button"
+                        class="service-remove"
+                        (click)="removeService($index)"
+                        [attr.aria-label]="'Remover serviço ' + service"
+                      >
+                        ×
+                      </button>
+                    </li>
+                  }
+                </ul>
+              } @else {
+                <p class="form-hint">Nenhum serviço adicionado.</p>
               }
+            </div>
+          } @else if (section.type === "colors") {
+            <p class="section-description">
+              {{ section.description }}
+            </p>
 
-              @if (!field.show || isFieldVisible(field.show)) {
-                <label [for]="field.key">
-                  {{ field.label }}
-                </label>
+            <div class="color-fields" formGroupName="colors">
+              @for (field of section.fields ?? []; track field.key) {
+                <div class="form-field color-field">
+                  <label [for]="field.key">
+                    {{ field.label }}
+                  </label>
 
-                @if (field.multiline) {
-                  <textarea
-                    [id]="field.key"
-                    [formControlName]="field.key"
-                    [placeholder]="field.placeholder"
-                  ></textarea>
-                } @else {
                   <input
                     [id]="field.key"
-                    [type]="field.type || 'text'"
+                    type="text"
                     [formControlName]="field.key"
                     [placeholder]="field.placeholder"
                   />
-                }
+                </div>
+              }
+            </div>
+          } @else {
+            <div class="fields-grid">
+              @for (field of section.fields ?? []; track field.key) {
+                <div class="form-field">
+                  @if (field.show) {
+                    <label class="checkbox-field">
+                      <input type="checkbox" [formControlName]="field.show" />
+
+                      <span>{{ field.showLabel }}</span>
+                    </label>
+                  }
+
+                  @if (!field.show || isFieldVisible(field.show)) {
+                    <label [for]="field.key">
+                      {{ field.label }}
+                    </label>
+
+                    @if (field.multiline) {
+                      <textarea
+                        [id]="field.key"
+                        [formControlName]="field.key"
+                        [placeholder]="field.placeholder"
+                        rows="4"
+                      ></textarea>
+                    } @else {
+                      <input
+                        [id]="field.key"
+                        [type]="field.type || 'text'"
+                        [formControlName]="field.key"
+                        [placeholder]="field.placeholder"
+                      />
+                    }
+                  }
+                </div>
               }
             </div>
           }
-        }
-      </fieldset>
-    }
-
-    <footer>
-      <button type="submit" [disabled]="loading">
-        {{ isEditing ? "Salvar alterações" : "Salvar" }}
-      </button>
-
-      <button type="button" (click)="cancel()" [disabled]="loading">
-        Cancelar
-      </button>
-
-      @if (isEditing) {
-        <button type="button" (click)="delete()" [disabled]="loading">
-          Deletar
-        </button>
+        </fieldset>
       }
-    </footer>
-  </form>
+
+      <footer class="form-actions">
+        @if (isEditing) {
+          <button
+            type="button"
+            class="button button--danger button--large"
+            (click)="delete()"
+            [disabled]="loading"
+          >
+            Deletar perfil
+          </button>
+        }
+
+        <button
+          type="button"
+          class="button button--outline button--large"
+          (click)="cancel()"
+          [disabled]="loading"
+        >
+          Cancelar
+        </button>
+
+        <button
+          type="submit"
+          class="button button--primary button--large"
+          [disabled]="loading"
+        >
+          {{ isEditing ? "Salvar alterações" : "Salvar perfil" }}
+        </button>
+      </footer>
+    </form>
+  }
 
   @if (errorMessage) {
-    <p role="alert">
+    <div class="form-error" role="alert">
+      <span>!</span>
       {{ errorMessage }}
-    </p>
+    </div>
   }
-}
+</main>

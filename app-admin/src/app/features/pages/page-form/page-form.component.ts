@@ -1,6 +1,11 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 
 import { ActivatedRoute, Router } from '@angular/router';
 
@@ -15,7 +20,7 @@ import { FormSection } from '../../../core/models/form-fields';
 @Component({
   selector: 'app-page-form',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule],
   templateUrl: './page-form.component.html',
   styleUrl: './page-form.component.scss',
 })

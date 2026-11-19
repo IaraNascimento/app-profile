@@ -1,32 +1,36 @@
-import { Component, inject } from "@angular/core";
-import { Router, RouterLink } from "@angular/router";
+import { Component, inject } from '@angular/core';
+import { Router, RouterLink } from '@angular/router';
 
-import { AuthService } from "../../../core/services/auth.service";
+import packageJson from '../../../../../package.json';
+
+import { AuthService } from '../../../core/services/auth.service';
 
 @Component({
-  selector: "app-login",
+  selector: 'app-login',
   standalone: true,
   imports: [RouterLink],
-  templateUrl: "./login.component.html",
-  styleUrl: "./login.component.scss",
+  templateUrl: './login.component.html',
+  styleUrl: './login.component.scss',
 })
 export class LoginComponent {
   private authService = inject(AuthService);
   private router = inject(Router);
 
+  readonly appVersion = packageJson.version;
+
   loading = false;
-  errorMessage = "";
+  errorMessage = '';
 
   async login(): Promise<void> {
     this.loading = true;
-    this.errorMessage = "";
+    this.errorMessage = '';
 
     try {
       await this.authService.loginWithGoogle();
 
-      await this.router.navigate(["/main"]);
+      await this.router.navigate(['/main']);
     } catch (error) {
-      this.errorMessage = "Não foi possível realizar o login.";
+      this.errorMessage = 'Não foi possível realizar o login.';
       console.error(error);
     } finally {
       this.loading = false;

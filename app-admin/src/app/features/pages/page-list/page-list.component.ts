@@ -1,18 +1,18 @@
-import { Component, OnInit, inject } from "@angular/core";
-import { FormsModule } from "@angular/forms";
-import { Router, RouterLink } from "@angular/router";
+import { Component, OnInit, inject } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { Router, RouterLink } from '@angular/router';
 
-import { Page } from "../../../core/models/page.model";
-import { SearchField } from "../../../core/models/search-field";
-import { PageService } from "../../../core/services/page.service";
-import { AuthService } from "../../../core/services/auth.service";
+import { Page } from '../../../core/models/page.model';
+import { SearchField } from '../../../core/models/search-field';
+import { PageService } from '../../../core/services/page.service';
+import { AuthService } from '../../../core/services/auth.service';
 
 @Component({
-  selector: "app-page-list",
+  selector: 'app-page-list',
   standalone: true,
   imports: [RouterLink, FormsModule],
-  templateUrl: "./page-list.component.html",
-  styleUrl: "./page-list.component.scss",
+  templateUrl: './page-list.component.html',
+  styleUrl: './page-list.component.scss',
 })
 export class PageListComponent implements OnInit {
   private pageService = inject(PageService);
@@ -22,27 +22,27 @@ export class PageListComponent implements OnInit {
   pages: Page[] = [];
   loading = true;
 
-  searchValue = "";
-  searchField = "all";
+  searchValue = '';
+  searchField = 'all';
 
   searchFields: SearchField[] = [
-    { value: "name", label: "Nome", show: null },
-    { value: "url", label: "URL", show: null },
-    { value: "profession", label: "Profissão", show: null },
-    { value: "description", label: "Descrição", show: "showDescription" },
-    { value: "title", label: "Título", show: "showTitle" },
-    { value: "subtitle", label: "Subtítulo", show: "showSubtitle" },
-    { value: "linkedIn", label: "LinkedIn", show: "showLinkedIn" },
-    { value: "instagram", label: "Instagram", show: "showInstagram" },
-    { value: "whatsApp", label: "WhatsApp", show: "showWhatsApp" },
+    { value: 'name', label: 'Nome', show: null },
+    { value: 'url', label: 'URL', show: null },
+    { value: 'profession', label: 'Profissão', show: null },
+    { value: 'description', label: 'Descrição', show: 'showDescription' },
+    { value: 'title', label: 'Título', show: 'showTitle' },
+    { value: 'subtitle', label: 'Subtítulo', show: 'showSubtitle' },
+    { value: 'linkedIn', label: 'LinkedIn', show: 'showLinkedIn' },
+    { value: 'instagram', label: 'Instagram', show: 'showInstagram' },
+    { value: 'whatsApp', label: 'WhatsApp', show: 'showWhatsApp' },
     {
-      value: "businessPhone",
-      label: "Telefone comercial",
-      show: "showBusinessPhone",
+      value: 'businessPhone',
+      label: 'Telefone comercial',
+      show: 'showBusinessPhone',
     },
-    { value: "email", label: "E-mail", show: "showEmail" },
-    { value: "address", label: "Endereço", show: "showAddress" },
-    { value: "services", label: "Serviços", show: null },
+    { value: 'email', label: 'E-mail', show: 'showEmail' },
+    { value: 'address', label: 'Endereço', show: 'showAddress' },
+    { value: 'services', label: 'Serviços', show: null },
   ];
 
   get filteredPages(): Page[] {
@@ -54,7 +54,7 @@ export class PageListComponent implements OnInit {
 
     return this.pages.filter((page) => {
       const fields =
-        this.searchField === "all"
+        this.searchField === 'all'
           ? this.searchFields
           : this.searchFields.filter(
               (field) => field.value === this.searchField,
@@ -77,7 +77,7 @@ export class PageListComponent implements OnInit {
       return value.some((item) => this.matches(item, search));
     }
 
-    if (typeof value === "object") {
+    if (typeof value === 'object') {
       return Object.values(value).some((item) => this.matches(item, search));
     }
 
@@ -86,8 +86,8 @@ export class PageListComponent implements OnInit {
 
   private normalize(value: string): string {
     return value
-      .normalize("NFD")
-      .replace(/[\u0300-\u036f]/g, "")
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
       .toLowerCase()
       .trim();
   }
@@ -101,8 +101,8 @@ export class PageListComponent implements OnInit {
   }
 
   clearSearch(): void {
-    this.searchValue = "";
-    this.searchField = "all";
+    this.searchValue = '';
+    this.searchField = 'all';
   }
 
   async ngOnInit(): Promise<void> {
@@ -113,7 +113,7 @@ export class PageListComponent implements OnInit {
     const user = this.authService.getCurrentUser();
 
     if (!user) {
-      await this.router.navigate(["/login"]);
+      await this.router.navigate(['/login']);
       return;
     }
 
@@ -122,18 +122,18 @@ export class PageListComponent implements OnInit {
     try {
       this.pages = await this.pageService.getAll(user.uid);
     } catch (error) {
-      console.error("Erro ao carregar:", error);
+      console.error('Erro ao carregar:', error);
     } finally {
       this.loading = false;
     }
   }
 
   editPage(id: string): void {
-    this.router.navigate(["/main/edit", id]);
+    this.router.navigate(['/main/edit', id]);
   }
 
   async deletePage(id: string): Promise<void> {
-    const confirmed = window.confirm("Tem certeza de que deseja excluir?");
+    const confirmed = window.confirm('Tem certeza de que deseja excluir?');
 
     if (!confirmed) {
       return;
@@ -142,7 +142,7 @@ export class PageListComponent implements OnInit {
     const user = this.authService.getCurrentUser();
 
     if (!user) {
-      await this.router.navigate(["/login"]);
+      await this.router.navigate(['/login']);
       return;
     }
 
@@ -150,13 +150,33 @@ export class PageListComponent implements OnInit {
       await this.pageService.delete(id, user.uid);
       await this.loadPages();
     } catch (error) {
-      console.error("Erro ao excluir:", error);
-      window.alert("Não foi possível excluir.");
+      console.error('Erro ao excluir:', error);
+      window.alert('Não foi possível excluir.');
     }
+  }
+
+  getWhatsAppUrl(phone: string): string {
+    const number = phone.replace(/\D/g, '');
+
+    return `https://wa.me/${number}`;
+  }
+
+  getInstagramUrl(handle: string): string {
+    const username = handle
+      .trim()
+      .replace(/^@/, '')
+      .replace(/^https?:\/\/(www\.)?instagram\.com\//, '')
+      .replace(/\/.*$/, '');
+
+    return `https://www.instagram.com/${username}/`;
+  }
+
+  getMapsUrl(address: string): string {
+    return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
   }
 
   async logout(): Promise<void> {
     await this.authService.logout();
-    await this.router.navigate(["/login"]);
+    await this.router.navigate(['/login']);
   }
 }

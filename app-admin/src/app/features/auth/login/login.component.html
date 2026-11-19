@@ -1,9 +1,42 @@
-<h1>Página de Perfil Profissional</h1>
+<main class="login-page">
+  <section class="login-card">
+    <div class="login-icon">
+      <span>✿</span>
+    </div>
 
-<button type="button" (click)="login()" [disabled]="loading">
-  {{ loading ? "Entrando..." : "Entrar com Google" }}
-</button>
+    <h1>Cadastro de Perfil Profissional</h1>
 
-@if (errorMessage) {
-  <p>{{ errorMessage }}</p>
-}
+    <p class="subtitle">Compartilhe seu perfil profissional com o mundo!</p>
+
+    <button
+      type="button"
+      class="google-button"
+      (click)="login()"
+      [disabled]="loading"
+    >
+      @if (!loading) {
+        <span class="google-icon">G</span>
+      }
+
+      {{ loading ? "Entrando..." : "Entrar com Google" }}
+    </button>
+
+    @if (errorMessage) {
+      <p class="error-message">{{ errorMessage }}</p>
+    }
+
+    <footer class="login-footer">
+      <span class="version">app-admin v{{ appVersion }}</span>
+
+      <a
+        class="author-badge"
+        href="https://app-profile-display.vercel.app/iara-nascimento-sztybe"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Criado por:
+        <strong>Iara Nascimento Sztybe</strong>
+      </a>
+    </footer>
+  </section>
+</main>

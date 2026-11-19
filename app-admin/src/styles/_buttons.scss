@@ -1,0 +1,268 @@
+@use "colors" as *;
+@use "spacing" as *;
+@use "radius" as *;
+@use "shadows" as *;
+@use "transitions" as *;
+@use "typography" as *;
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: $spacing-2;
+
+  min-height: $button-min-height;
+  padding: $spacing-3 $spacing-5;
+
+  border: $border-width-default solid transparent;
+  border-radius: $radius-md;
+
+  font-family: $font-family-base;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+  line-height: $line-height-base;
+  text-align: center;
+  text-decoration: none;
+  white-space: nowrap;
+
+  cursor: pointer;
+  user-select: none;
+
+  transition:
+    background-color $transition-fast,
+    border-color $transition-fast,
+    color $transition-fast,
+    box-shadow $transition-fast,
+    transform $transition-fast;
+
+  &:hover:not(:disabled) {
+    transform: translateY(-1px);
+  }
+
+  &:active:not(:disabled) {
+    transform: translateY(0);
+  }
+
+  &:focus-visible {
+    outline: 2px solid $color-primary;
+    outline-offset: 3px;
+  }
+
+  &:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+  }
+
+  // Variantes principais
+
+  &--primary {
+    background: $color-primary;
+    border-color: $color-primary;
+    color: $color-on-primary;
+
+    &:hover:not(:disabled) {
+      background: $color-primary-hover;
+      border-color: $color-primary-hover;
+      box-shadow: $shadow-button-hover;
+    }
+
+    &:active:not(:disabled) {
+      background: $color-primary-dark;
+    }
+  }
+
+  &--secondary {
+    background: $color-primary-light;
+    border-color: $color-primary-border;
+    color: $color-text;
+
+    &:hover:not(:disabled) {
+      background: $color-lilac;
+      border-color: $color-primary;
+    }
+  }
+
+  &--outline {
+    background: transparent;
+    border-color: $color-primary-border;
+    color: $color-primary;
+
+    &:hover:not(:disabled) {
+      background: $color-primary-light;
+      border-color: $color-primary;
+    }
+  }
+
+  &--ghost {
+    background: transparent;
+    color: $color-text-secondary;
+
+    &:hover:not(:disabled) {
+      background: $color-surface-soft;
+      color: $color-text;
+    }
+  }
+
+  // Variantes semânticas
+
+  &--danger {
+    background: $color-error-background;
+    border-color: $color-error-background;
+    color: $color-error;
+
+    &:hover:not(:disabled) {
+      background: $color-error;
+      border-color: $color-error;
+      color: $color-on-danger;
+    }
+  }
+
+  &--danger-solid {
+    background: $color-error;
+    border-color: $color-error;
+    color: $color-on-danger;
+
+    &:hover:not(:disabled) {
+      filter: brightness(0.92);
+      box-shadow: $shadow-button-hover;
+    }
+  }
+
+  &--success {
+    background: $color-success-light;
+    border-color: $color-success-border;
+    color: $color-success;
+
+    &:hover:not(:disabled) {
+      background: $color-success;
+      border-color: $color-success;
+      color: $color-surface;
+    }
+  }
+
+  &--success-solid {
+    background: $color-success;
+    border-color: $color-success;
+    color: $color-surface;
+
+    &:hover:not(:disabled) {
+      filter: brightness(0.92);
+    }
+  }
+
+  &--info {
+    background: $color-info-light;
+    border-color: $color-info-border;
+    color: $color-info;
+
+    &:hover:not(:disabled) {
+      background: $color-info;
+      border-color: $color-info;
+      color: $color-surface;
+    }
+  }
+
+  &--warning {
+    background: $color-warning-light;
+    border-color: $color-warning-border;
+    color: $color-warning;
+
+    &:hover:not(:disabled) {
+      background: $color-warning;
+      border-color: $color-warning;
+      color: $color-surface;
+    }
+  }
+
+  &--neutral {
+    background: $color-neutral-light;
+    border-color: $color-neutral-border;
+    color: $color-neutral;
+
+    &:hover:not(:disabled) {
+      background: $color-neutral;
+      border-color: $color-neutral;
+      color: $color-surface;
+    }
+  }
+
+  // Tamanhos
+
+  &--xs {
+    min-height: auto;
+    padding: $spacing-1 $spacing-2;
+    font-size: $font-size-xs;
+  }
+
+  &--small {
+    min-height: auto;
+    padding: $spacing-2 $spacing-3;
+    font-size: $font-size-xs;
+  }
+
+  &--large {
+    min-height: 60px;
+    padding: $spacing-4 $spacing-6;
+    font-size: $font-size-base;
+  }
+
+  // Formatos
+
+  &--pill {
+    border-radius: $radius-pill;
+  }
+
+  &--rounded {
+    border-radius: $radius-xl;
+  }
+
+  &--block {
+    display: flex;
+    width: 100%;
+  }
+
+  &--icon {
+    width: $button-min-height;
+    min-width: $button-min-height;
+    height: $button-min-height;
+    padding: 0;
+  }
+
+  &--icon.button--small {
+    width: 36px;
+    min-width: 36px;
+    height: 36px;
+  }
+
+  // Sombras
+
+  &--elevated {
+    box-shadow: $shadow-card;
+
+    &:hover:not(:disabled) {
+      box-shadow: $shadow-button-hover;
+    }
+  }
+
+  // Link visualizado como botão
+
+  &--link {
+    min-height: auto;
+    padding: 0;
+
+    background: transparent;
+    border: none;
+    border-radius: 0;
+
+    color: $color-primary;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+
+    &:hover:not(:disabled) {
+      color: $color-primary-dark;
+      transform: none;
+    }
+  }
+}
