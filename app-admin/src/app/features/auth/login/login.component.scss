@@ -25,6 +25,18 @@
     radial-gradient(circle at 15% 20%, $color-pink 0, transparent 35%),
     radial-gradient(circle at 85% 80%, $color-mint 0, transparent 35%),
     $color-background;
+
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  @media (max-width: 768px) {
+    background-image: url("/assets/login-background-mobile.jpeg");
+  }
+
+  @media (min-width: 769px) {
+    background-image: url("/assets/login-background.jpeg");
+  }
 }
 
 .login-card {

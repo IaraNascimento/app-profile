@@ -1,6 +1,6 @@
 {
   "name": "app-admin",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "scripts": {
     "ng": "ng",
     "start": "node scripts/set-env.js && ng serve",
