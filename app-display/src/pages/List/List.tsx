@@ -116,60 +116,83 @@ export function List() {
   return (
     <main className="profile-container">
       <section className="profile-list">
-        <h1>Perfis profissionais</h1>
+        <header className="profile-header">
+          <div>
+            <h1>Páginas</h1>
+            <p>Encontre e acesse os perfis cadastrados.</p>
+          </div>
+        </header>
 
         <div className="profile-filters">
-          <label htmlFor="searchField">Pesquisar em:</label>
+          <div className="form-field">
+            <label htmlFor="searchField">Pesquisar em:</label>
 
-          <select
-            id="searchField"
-            value={searchField}
-            onChange={(event) =>
-              setSearchField(event.target.value as SearchField)
-            }
-          >
-            <option value="all">Todos</option>
+            <select
+              id="searchField"
+              value={searchField}
+              onChange={(event) =>
+                setSearchField(event.target.value as SearchField)
+              }
+            >
+              <option value="all">Todos</option>
 
-            {searchFields.map((field) => (
-              <option key={field.value} value={field.value}>
-                {field.label}
-              </option>
-            ))}
-          </select>
+              {searchFields.map((field) => (
+                <option key={field.value} value={field.value}>
+                  {field.label}
+                </option>
+              ))}
+            </select>
+          </div>
 
-          <label htmlFor="searchValue">Buscar:</label>
+          <div className="form-field profile-filters__search">
+            <label htmlFor="searchValue">Buscar:</label>
 
-          <input
-            id="searchValue"
-            type="search"
-            placeholder="Digite o que deseja encontrar..."
-            value={searchValue}
-            onChange={(event) => setSearchValue(event.target.value)}
-          />
+            <input
+              id="searchValue"
+              type="search"
+              placeholder="Digite o que deseja encontrar..."
+              value={searchValue}
+              onChange={(event) => setSearchValue(event.target.value)}
+            />
+          </div>
 
           {(searchValue || searchField !== "all") && (
-            <button type="button" onClick={clearSearch}>
+            <button
+              className="button button--ghost button--small profile-filters__clear"
+              type="button"
+              onClick={clearSearch}
+            >
               Limpar filtros
             </button>
           )}
         </div>
 
         {Object.keys(groupedPages).length === 0 ? (
-          <section>
-            <h2>Nenhum perfil encontrado.</h2>
+          <section className="profile-empty">
+            <span className="profile-empty__icon">✿</span>
+            <h2>Nenhum perfil encontrado</h2>
             <p>Tente alterar os filtros ou os termos da busca.</p>
           </section>
         ) : (
           <div className="user-groups">
             {Object.entries(groupedPages).map(([userId, userPages]) => (
               <section className="user-group" key={userId}>
-                <h2>{userPages[0].userName || "Usuário desconhecido"}</h2>
+                <header className="user-group__header">
+                  <span className="user-group__icon">✿</span>
+                  <h2>{userPages[0].userName || "Usuário desconhecido"}</h2>
+                  <span className="user-group__count">
+                    {userPages.length}
+                    {userPages.length === 1 ? " página" : " páginas"}
+                  </span>
+                </header>
 
                 <ul className="slug-list">
                   {userPages.map((page) => (
                     <li key={page.id}>
-                      <Link to={`/${page.slug}`}>
-                        {page.name} ({page.url})
+                      <Link to={`/${page.slug}`} className="slug-list__link">
+                        <span className="slug-list__name">{page.name}</span>
+                        <span className="slug-list__url">{page.url}</span>
+                        <span className="slug-list__arrow">↗</span>
                       </Link>
                     </li>
                   ))}

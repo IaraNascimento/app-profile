@@ -1,0 +1,46 @@
+@use "colors" as *;
+@use "spacing" as *;
+@use "radius" as *;
+@use "shadows" as *;
+@use "transitions" as *;
+@use "typography" as *;
+
+.form-control {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-2;
+
+  label {
+    color: $color-text;
+    font-size: $font-size-sm;
+    font-weight: $font-weight-medium;
+  }
+
+  input,
+  select,
+  textarea {
+    width: 100%;
+    min-height: $button-min-height;
+    padding: $spacing-3 $spacing-4;
+
+    background: $color-surface;
+    border: $border-width-default solid $color-border;
+    border-radius: $radius-md;
+
+    color: $color-text;
+    font-family: $font-family-base;
+    font-size: $font-size-base;
+
+    transition: $transition-fast;
+
+    &:focus {
+      outline: none;
+      border-color: $color-primary;
+      box-shadow: 0 0 0 3px $color-primary-light;
+    }
+
+    &::placeholder {
+      color: $color-text-muted;
+    }
+  }
+}

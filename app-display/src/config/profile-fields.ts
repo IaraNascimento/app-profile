@@ -25,7 +25,6 @@ export interface ProfileField {
 }
 
 export const profileFields: ProfileField[] = [
-  { value: "profession", label: "Profissão", show: null },
   { value: "description", label: "Descrição", show: "showDescription" },
   { value: "title", label: "Título", show: "showTitle" },
   { value: "subtitle", label: "Subtítulo", show: "showSubtitle" },
