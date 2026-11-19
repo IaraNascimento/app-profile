@@ -69,7 +69,7 @@
     border: $border-width-default solid $color-border;
     border-radius: $radius-md;
     outline: none;
-    transition: $transition-fast;
+    transition: $transition-normal;
 
     &:focus {
       background: $color-surface;
@@ -238,7 +238,7 @@
     align-self: flex-end;
     margin-top: auto;
     color: $color-text-muted;
-    transition: $transition-fast;
+    transition: $transition-normal;
   }
 }
 

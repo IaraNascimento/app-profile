@@ -2,6 +2,8 @@ export interface PageColors {
   screenBackgroundColor: string;
   cardBackgroundColor: string;
   cardBorderColor: string;
+  cardInnerBackgroundColor: string;
+  cardInnerBorderColor: string;
   nameColor: string;
   labelColor: string;
   valueColor: string;
@@ -16,6 +18,8 @@ export interface Page {
   name: string;
   url: string;
   profession: string;
+
+  services: string[];
 
   showDescription: boolean;
   description: string;
@@ -43,8 +47,6 @@ export interface Page {
 
   showAddress: boolean;
   address: string;
-
-  services: string[];
 
   colors?: PageColors;
 }

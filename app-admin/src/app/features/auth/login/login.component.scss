@@ -106,10 +106,10 @@ h1 {
   cursor: pointer;
 
   transition:
-    background $transition-fast,
-    border-color $transition-fast,
-    transform $transition-fast,
-    box-shadow $transition-fast;
+    background $transition-normal,
+    border-color $transition-normal,
+    transform $transition-normal,
+    box-shadow $transition-normal;
 
   &:hover:not(:disabled) {
     background: $color-surface-soft;
@@ -182,10 +182,10 @@ h1 {
   text-decoration: none;
   cursor: pointer;
   transition:
-    background $transition-fast,
-    border-color $transition-fast,
-    transform $transition-fast,
-    box-shadow $transition-fast;
+    background $transition-normal,
+    border-color $transition-normal,
+    transform $transition-normal,
+    box-shadow $transition-normal;
 
   strong {
     color: $color-primary;

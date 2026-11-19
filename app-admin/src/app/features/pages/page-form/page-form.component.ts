@@ -162,32 +162,42 @@ export class PageFormComponent implements OnInit {
         {
           key: 'screenBackgroundColor',
           label: 'Fundo da página',
-          placeholder: '#f8fafc',
+          placeholder: '#FFF4E8',
         },
         {
           key: 'cardBackgroundColor',
           label: 'Fundo do cartão',
-          placeholder: '#ffffff',
+          placeholder: '#FFFFFF',
         },
         {
           key: 'cardBorderColor',
           label: 'Borda do cartão',
-          placeholder: '#e2e8f0',
+          placeholder: '#F2C9A5',
+        },
+        {
+          key: 'cardInnerBackgroundColor',
+          label: 'Fundo interna do cartão',
+          placeholder: '#ffffff',
+        },
+        {
+          key: 'cardInnerBorderColor',
+          label: 'Borda interna do cartão',
+          placeholder: '#F2C9A5',
         },
         {
           key: 'nameColor',
           label: 'Nome',
-          placeholder: '#1e293b',
+          placeholder: '#B6531D',
         },
         {
           key: 'labelColor',
           label: 'Rótulos dos campos',
-          placeholder: '#334155',
+          placeholder: '#A66A43',
         },
         {
           key: 'valueColor',
           label: 'Valores dos campos',
-          placeholder: '#475569',
+          placeholder: '#49372D',
         },
       ],
     },
@@ -235,6 +245,14 @@ export class PageFormComponent implements OnInit {
         Validators.pattern(/^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$/),
       ],
       cardBorderColor: [
+        '',
+        Validators.pattern(/^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$/),
+      ],
+      cardInnerBackgroundColor: [
+        '',
+        Validators.pattern(/^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$/),
+      ],
+      cardInnerBorderColor: [
         '',
         Validators.pattern(/^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$/),
       ],
@@ -321,6 +339,8 @@ export class PageFormComponent implements OnInit {
           screenBackgroundColor: page.colors?.screenBackgroundColor ?? '',
           cardBackgroundColor: page.colors?.cardBackgroundColor ?? '',
           cardBorderColor: page.colors?.cardBorderColor ?? '',
+          cardInnerBackgroundColor: page.colors?.cardInnerBackgroundColor ?? '',
+          cardInnerBorderColor: page.colors?.cardInnerBorderColor ?? '',
           nameColor: page.colors?.nameColor ?? '',
           labelColor: page.colors?.labelColor ?? '',
           valueColor: page.colors?.valueColor ?? '',

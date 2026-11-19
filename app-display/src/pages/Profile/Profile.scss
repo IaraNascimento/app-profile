@@ -7,7 +7,7 @@
   width: 100%;
   min-height: 100vh;
   padding: $spacing-10 $spacing-5;
-  background: var(--screen-background-color, #{$color-background});
+  background-color: var(--screen-background-color, $color-background);
 }
 
 .profile {
@@ -16,139 +16,250 @@
   height: fit-content;
   padding: $spacing-8;
   overflow: hidden;
-  background: var(--card-background-color, #{$color-surface});
-  border: $border-width-default solid var(--card-border-color, #{$color-border});
+  background-color: var(--card-background-color, $color-surface);
+  border: $border-width-default solid var(--card-border-color, $color-border);
   border-radius: $radius-2xl;
   box-shadow: $shadow-card;
 
   &__header {
-    position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: $spacing-4;
     padding: $spacing-7 $spacing-4;
     margin-bottom: $spacing-6;
-    background: var(--card-header-background-color, #{$color-surface-soft});
-    border: $border-width-default solid $color-border-soft;
+    background-color: var(--card-inner-background-color, $color-surface-soft);
+    border: $border-width-default solid
+      var(--card-inner-border-color, $color-border-soft);
     border-radius: $radius-xl;
 
     h1 {
       margin: 0;
-      color: var(--name-color, #{$color-text});
+      color: var(--name-color, $color-text);
       font-size: clamp($font-size-2xl, 5vw, 34px);
       font-weight: $font-weight-bold;
       line-height: $line-height-heading;
       overflow-wrap: anywhere;
     }
-  }
 
-  &__decoration {
-    display: grid;
-    width: $icon-size;
-    height: $icon-size;
-    color: $color-primary;
-    font-size: 36px;
-    background: $color-primary-light;
-    border: $border-width-default solid $color-primary-border;
-    border-radius: 50%;
-    place-items: center;
+    h2 {
+      margin: 0;
+      color: color-mix(in srgb, var(--name-color, $color-text) 75%, white);
+    }
   }
 
   &__content {
     display: flex;
     flex-direction: column;
-    gap: $spacing-3;
+    gap: $spacing-4;
+
+    h3 {
+      margin: 0;
+      color: var(--label-color, $color-text);
+    }
+
+    > p {
+      color: color-mix(in srgb, var(--label-color, $color-text) 75%, white);
+    }
   }
 
+  &__description,
   &__section {
-    padding: $spacing-4 $spacing-5;
-    background: var(--section-background-color, #{$color-surface-soft});
-    border: $border-width-default solid $color-border-soft;
+    padding: $spacing-5;
+    background-color: var(--card-inner-background-color, $color-surface-soft);
+    border: $border-width-default solid
+      var(--card-inner-border-color, $color-border-soft);
     border-radius: $radius-lg;
 
     h2 {
+      display: flex;
+      align-items: center;
+      gap: $spacing-2;
       margin: 0 0 $spacing-3;
-      color: var(--label-color, #{$color-text});
+      color: var(--label-color, $color-text);
       font-size: $font-size-base;
       font-weight: $font-weight-bold;
-      line-height: $line-height-heading;
     }
   }
 
-  &__field {
+  &__description {
+    p {
+      margin: 0;
+      color: var(--value-color, $color-text-secondary);
+      font-size: $font-size-base;
+      line-height: $line-height-base;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+    }
+  }
+
+  &__contacts {
     display: flex;
     flex-direction: column;
-    gap: $spacing-1;
-    margin: 0;
-    color: var(--value-color, #{$color-text-secondary});
-    font-size: $font-size-base;
-    line-height: $line-height-base;
-    overflow-wrap: anywhere;
+    gap: $spacing-2;
+    padding: $spacing-5;
+    background-color: var(--card-inner-background-color, $color-surface-soft);
+    border: $border-width-default solid
+      var(--card-inner-border-color, $color-border-soft);
+    border-radius: $radius-lg;
+  }
 
-    span {
-      color: var(--label-color, #{$color-text-secondary});
-      font-size: $font-size-sm;
-      font-weight: $font-weight-medium;
-      letter-spacing: $letter-spacing-wide;
+  &__contact {
+    display: flex;
+    align-items: center;
+    gap: $spacing-2;
+    min-width: 0;
+
+    &:not(:has(.profile__map)) {
+      min-height: 48px;
+    }
+  }
+
+  &__icon {
+    display: grid;
+    flex: 0 0 $spacing-7;
+    width: $spacing-7;
+    height: $spacing-7;
+    color: var(--label-color, $color-primary);
+    font-size: $font-size-2xl;
+    font-weight: $font-weight-bold;
+    line-height: 1;
+    place-items: center;
+  }
+
+  &__contact-content {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: $spacing-1;
+    min-width: 0;
+
+    > span,
+    > a {
+      color: var(--value-color, $color-text-secondary);
+      font-size: $font-size-base;
+      line-height: $line-height-base;
+      overflow-wrap: anywhere;
     }
 
-    strong {
-      color: var(--value-color, #{$color-text});
-      font-size: $font-size-base;
-      font-weight: $font-weight-normal;
+    > a {
+      text-decoration: none;
+      transition: $transition-normal;
+
+      &:hover {
+        color: var(--name-color, $color-primary);
+        text-decoration: underline;
+      }
+    }
+  }
+
+  &__map {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-2;
+
+    iframe {
+      width: 100%;
+      height: 220px;
+      border: 0;
+      border-radius: $radius-md;
     }
   }
 
   &__list {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    display: flex;
+    flex-wrap: wrap;
     gap: $spacing-2;
+    margin: $spacing-1 0 0;
     padding: 0;
-    margin: 0;
     list-style: none;
 
     li {
       position: relative;
-      padding: $spacing-3 $spacing-3 $spacing-3 $spacing-8;
-      color: var(--value-color, #{$color-text});
+      padding: $spacing-2 $spacing-4 $spacing-2 $spacing-8;
+      color: white;
       font-size: $font-size-sm;
       line-height: $line-height-base;
       overflow-wrap: anywhere;
-      background: var(--list-item-background-color, #{$color-surface});
-      border: $border-width-default solid $color-border-soft;
-      border-radius: $radius-md;
+      background: var(--label-color, $color-primary-dark);
+      border-radius: $radius-pill;
 
       &::before {
         position: absolute;
         top: 50%;
         left: $spacing-3;
-        color: $color-primary;
-        font-size: $font-size-base;
-        content: "♡";
+        content: "★";
         transform: translateY(-50%);
       }
     }
   }
 
   &__footer {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: $spacing-2;
-    padding-top: $spacing-6;
-    margin-top: $spacing-6;
-    color: $color-text-muted;
-    border-top: $border-width-default solid $color-border-soft;
+    text-align: center;
 
-    span {
-      color: $color-primary;
+    &__version {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: $spacing-2;
+      padding-top: $spacing-6;
+      margin-top: $spacing-6;
+      color: $color-text-muted;
+      border-top: $border-width-default solid
+        var(--card-border-color, $color-border);
+
+      span {
+        color: color-mix(in srgb, var(--label-color, $color-text) 50%, white);
+      }
+
+      p {
+        color: color-mix(in srgb, var(--label-color, $color-text) 75%, white);
+        margin-top: $spacing-1;
+        font-size: $font-size-xs;
+        letter-spacing: $letter-spacing-wide;
+      }
     }
 
-    p {
-      margin: 0;
+    &__author {
+      display: inline-flex;
+      gap: $spacing-2;
+      padding: $spacing-2 $spacing-4;
+      margin-top: $spacing-4;
+
+      background-color: color-mix(
+        in srgb,
+        var(--card-inner-background-color, $color-surface-soft) 75%,
+        white
+      );
+      border: $border-width-default solid
+        var(--card-border-color, $color-primary-border);
+      border-radius: $radius-pill;
+
+      color: color-mix(in srgb, var(--label-color, $color-text) 75%, white);
       font-size: $font-size-xs;
-      letter-spacing: $letter-spacing-wide;
+      line-height: $line-height-base;
+
+      text-decoration: none;
+      cursor: pointer;
+      transition:
+        background $transition-normal,
+        transform $transition-normal,
+        box-shadow $transition-normal;
+
+      strong {
+        color: var(--label-color, $color-text);
+        font-weight: $font-weight-medium;
+      }
+
+      &:hover {
+        background-color: color-mix(
+          in srgb,
+          var(--card-inner-background-color, $color-surface-soft) 90%,
+          white
+        );
+        transform: translateY(-2px);
+        box-shadow: $shadow-button-hover;
+      }
     }
   }
 }
@@ -163,17 +274,9 @@
   text-align: center;
   background: $color-background;
 
-  h2 {
-    margin: 0 0 $spacing-2;
-    color: $color-text;
-    font-size: $font-size-xl;
-  }
-
   p {
-    margin: 0;
     color: $color-text-secondary;
     font-size: $font-size-base;
-    line-height: $line-height-base;
   }
 }
 
@@ -194,8 +297,24 @@
       }
     }
 
-    &__section {
+    &__contacts {
       padding: $spacing-4;
+      gap: $spacing-4;
+    }
+
+    &__contact {
+      gap: $spacing-3;
+    }
+
+    &__icon {
+      flex-basis: 42px;
+      width: 42px;
+      height: 42px;
+      font-size: 32px;
+    }
+
+    &__map iframe {
+      height: 180px;
     }
 
     &__list {

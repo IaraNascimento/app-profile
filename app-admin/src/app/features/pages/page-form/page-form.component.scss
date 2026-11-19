@@ -115,9 +115,9 @@
     line-height: $line-height-base;
 
     transition:
-      border-color $transition-fast,
-      box-shadow $transition-fast,
-      background-color $transition-fast;
+      border-color $transition-normal,
+      box-shadow $transition-normal,
+      background-color $transition-normal;
 
     &::placeholder {
       color: $color-text-muted;
@@ -236,7 +236,7 @@
   line-height: 1;
 
   cursor: pointer;
-  transition: $transition-fast;
+  transition: $transition-normal;
 
   &:hover {
     background: $color-pink;

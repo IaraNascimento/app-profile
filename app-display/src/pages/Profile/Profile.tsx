@@ -5,10 +5,15 @@ import { getPageBySlug } from "../../services/page.service";
 import type { Page as PageType } from "../../types/page";
 import { profileFields } from "../../config/profile-fields";
 
-import "./Profile.scss";
 import { NotFound } from "../NotFound/NotFound";
 
+import "./Profile.scss";
+
+import packageJson from "../../../package.json";
+
 export function Profile() {
+  const appVersion = packageJson.version;
+
   const { slug } = useParams<{ slug: string }>();
 
   const [page, setPage] = useState<PageType | null>(null);
@@ -17,12 +22,14 @@ export function Profile() {
   const colors = page?.colors;
 
   const profileStyles = {
-    "--screen-background-color": colors?.screenBackgroundColor || "#f8fafc",
-    "--card-background-color": colors?.cardBackgroundColor || "#ffffff",
-    "--card-border-color": colors?.cardBorderColor || "transparent",
-    "--name-color": colors?.nameColor || "#1e293b",
-    "--label-color": colors?.labelColor || "#334155",
-    "--value-color": colors?.valueColor || "#475569",
+    "--screen-background-color": colors?.screenBackgroundColor,
+    "--card-background-color": colors?.cardBackgroundColor,
+    "--card-border-color": colors?.cardBorderColor,
+    "--card-inner-background-color": colors?.cardInnerBackgroundColor,
+    "--card-inner-border-color": colors?.cardInnerBorderColor,
+    "--name-color": colors?.nameColor,
+    "--label-color": colors?.labelColor,
+    "--value-color": colors?.valueColor,
   } as CSSProperties;
 
   useEffect(() => {
@@ -71,7 +78,83 @@ export function Profile() {
   }
 
   if (!page) {
-    return <NotFound></NotFound>;
+    return <NotFound />;
+  }
+
+  const visibleFields = profileFields.filter((field) => {
+    const value = page[field.value];
+
+    return (
+      (!field.show || page[field.show] === true) &&
+      value != null &&
+      value !== "" &&
+      (!Array.isArray(value) || value.length > 0)
+    );
+  });
+
+  const description = visibleFields.find(
+    (field) => field.type === "description",
+  );
+
+  const contacts = visibleFields.filter(
+    (field) => field.type !== "description" && field.value !== "services",
+  );
+
+  const services = visibleFields.find((field) => field.value === "services");
+
+  const serviceItems = services ? page[services.value] : null;
+
+  function getContactUrl(type: string | undefined, value: string) {
+    switch (type) {
+      case "link":
+        return value.startsWith("http") ? value : `https://${value}`;
+
+      case "instagram":
+        return `https://www.instagram.com/${value.replace("@", "").replace(/^\/+|\/+$/g, "")}/`;
+
+      case "whatsapp":
+        return `https://wa.me/${value.replace(/\D/g, "")}`;
+
+      default:
+        return undefined;
+    }
+  }
+
+  function renderContact(field: (typeof profileFields)[number]) {
+    const value = String(page![field.value]);
+
+    if (field.type === "map") {
+      const mapUrl = `https://www.google.com/maps?q=${encodeURIComponent(value)}&output=embed`;
+
+      return (
+        <div className="profile__map">
+          <iframe
+            src={mapUrl}
+            title={`Localização: ${value}`}
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+            allowFullScreen
+          />
+          <a
+            href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(value)}`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {value}
+          </a>
+        </div>
+      );
+    }
+
+    const url = getContactUrl(field.type, value);
+
+    return url ? (
+      <a href={url} target="_blank" rel="noopener noreferrer">
+        {value}
+      </a>
+    ) : (
+      <span>{value}</span>
+    );
   }
 
   return (
@@ -83,44 +166,62 @@ export function Profile() {
         </header>
 
         <div className="profile__content">
-          {profileFields.map((field) => {
-            const value = page[field.value];
+          {page.showTitle && <h3>{page.title}</h3>}
+          {page.showSubtitle && <p>{page.subtitle}</p>}
 
-            if (
-              (field.show && page[field.show] !== true) ||
-              value == null ||
-              value === "" ||
-              (Array.isArray(value) && !value.length)
-            ) {
-              return null;
-            }
+          {Array.isArray(serviceItems) && (
+            <ul className="profile__list">
+              {serviceItems.map((item, index) => (
+                <li key={`${item}-${index}`}>{item}</li>
+              ))}
+            </ul>
+          )}
 
-            return (
-              <section className="profile__section" key={field.value}>
-                {Array.isArray(value) ? (
-                  <>
-                    <h2>{field.label}</h2>
+          {page.showDescription && description && (
+            <section className="profile__description">
+              <h2>
+                <span className="profile__icon" aria-hidden="true">
+                  {description.icon}
+                </span>{" "}
+                {description.label}
+              </h2>
+              <p>{String(page[description.value])}</p>
+            </section>
+          )}
 
-                    <ul className="profile__list">
-                      {value.map((item, index) => (
-                        <li key={`${item}-${index}`}>{item}</li>
-                      ))}
-                    </ul>
-                  </>
-                ) : (
-                  <p className="profile__field">
-                    <span>{field.label}</span>
-                    <strong>{String(value)}</strong>
-                  </p>
-                )}
-              </section>
-            );
-          })}
+          {contacts.length > 0 && (
+            <section className="profile__contacts">
+              {contacts.map((field) => (
+                <div className="profile__contact" key={field.value}>
+                  {field.icon && (
+                    <span className="profile__icon" aria-hidden="true">
+                      {field.icon}
+                    </span>
+                  )}
+
+                  <div className="profile__contact-content">
+                    {renderContact(field)}
+                  </div>
+                </div>
+              ))}
+            </section>
+          )}
         </div>
 
         <footer className="profile__footer">
-          <span>✿</span>
-          <p>Perfil profissional</p>
+          <div className="profile__footer__version">
+            <span>✿</span>
+            <p>Perfil profissional - v{appVersion}</p>
+          </div>
+          <a
+            className="profile__footer__author"
+            href="https://app-profile-display.vercel.app/iara-nascimento-sztybe"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Criado por:
+            <strong>Iara Nascimento Sztybe</strong>
+          </a>{" "}
         </footer>
       </article>
     </main>

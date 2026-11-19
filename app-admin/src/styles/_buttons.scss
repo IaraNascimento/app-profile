@@ -29,11 +29,11 @@
   user-select: none;
 
   transition:
-    background-color $transition-fast,
-    border-color $transition-fast,
-    color $transition-fast,
-    box-shadow $transition-fast,
-    transform $transition-fast;
+    background-color $transition-normal,
+    border-color $transition-normal,
+    color $transition-normal,
+    box-shadow $transition-normal,
+    transform $transition-normal;
 
   &:hover:not(:disabled) {
     transform: translateY(-1px);

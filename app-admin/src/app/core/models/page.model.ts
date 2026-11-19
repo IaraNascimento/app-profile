@@ -2,6 +2,8 @@ export interface PageColors {
   screenBackgroundColor: string;
   cardBackgroundColor: string;
   cardBorderColor: string;
+  cardInnerBackgroundColor: string;
+  cardInnerBorderColor: string;
   nameColor: string;
   labelColor: string;
   valueColor: string;
