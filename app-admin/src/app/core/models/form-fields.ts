@@ -6,6 +6,7 @@ interface FormField {
   show?: string;
   showLabel?: string;
   multiline?: boolean;
+  fullWidth?: boolean;
 }
 
 export interface FormSection {

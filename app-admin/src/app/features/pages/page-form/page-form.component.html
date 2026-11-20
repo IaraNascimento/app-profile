@@ -92,13 +92,25 @@
                     [formControlName]="field.key"
                     [placeholder]="field.placeholder"
                   />
+
+                  @if (
+                    form.get("colors." + field.key)?.hasError("pattern") &&
+                    form.get("colors." + field.key)?.touched
+                  ) {
+                    <small class="field-error">
+                      Informe uma cor hexadecimal válida. Ex.: #FFFFFF
+                    </small>
+                  }
                 </div>
               }
             </div>
           } @else {
             <div class="fields-grid">
               @for (field of section.fields ?? []; track field.key) {
-                <div class="form-field">
+                <div
+                  class="form-field"
+                  [ngClass]="{ 'form-field-full': field.fullWidth }"
+                >
                   @if (field.show) {
                     <label class="checkbox-field">
                       <input type="checkbox" [formControlName]="field.show" />
@@ -126,6 +138,12 @@
                         [formControlName]="field.key"
                         [placeholder]="field.placeholder"
                       />
+                    }
+
+                    @if (hasError(field.key, "required")) {
+                      <small class="field-error">
+                        Este campo é obrigatório.
+                      </small>
                     }
                   }
                 </div>
@@ -159,7 +177,7 @@
         <button
           type="submit"
           class="button button--primary button--large"
-          [disabled]="loading"
+          [disabled]="loading || form.invalid"
         >
           {{ isEditing ? "Salvar alterações" : "Salvar perfil" }}
         </button>

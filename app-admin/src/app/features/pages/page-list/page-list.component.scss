@@ -72,7 +72,7 @@ $max-width: 960px;
 
 .pages-list {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
   gap: $spacing-5;
 
   max-width: $max-width;

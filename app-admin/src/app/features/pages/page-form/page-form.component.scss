@@ -82,16 +82,22 @@
 // Campos
 
 .fields-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  display: flex;
+  flex-wrap: wrap;
+  // grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: $spacing-5;
 }
 
 .form-field {
+  width: calc(49.9% - #{$spacing-5 / 2});
   display: flex;
   flex-direction: column;
   gap: $spacing-2;
   min-width: 0;
+
+  &-full {
+    width: 100%;
+  }
 
   > label {
     color: $color-text;

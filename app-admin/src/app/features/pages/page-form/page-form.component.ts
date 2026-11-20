@@ -93,6 +93,7 @@ export class PageFormComponent implements OnInit {
           showLabel: 'Mostrar Descrição',
           placeholder: 'Aqui vai o resumo do perfil profissional...',
           multiline: true,
+          fullWidth: true,
         },
       ],
     },
@@ -203,10 +204,14 @@ export class PageFormComponent implements OnInit {
     },
   ];
 
+  hexaValidationPattern = Validators.pattern(
+    /^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$/,
+  );
+
   form = this.fb.nonNullable.group({
-    name: [''],
-    url: [''],
-    profession: [''],
+    name: ['', Validators.required],
+    url: ['', Validators.required],
+    profession: ['', Validators.required],
 
     showDescription: [false],
     description: [''],
@@ -236,35 +241,14 @@ export class PageFormComponent implements OnInit {
     address: [''],
 
     colors: this.fb.nonNullable.group({
-      screenBackgroundColor: [
-        '',
-        Validators.pattern(/^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$/),
-      ],
-      cardBackgroundColor: [
-        '',
-        Validators.pattern(/^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$/),
-      ],
-      cardBorderColor: [
-        '',
-        Validators.pattern(/^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$/),
-      ],
-      cardInnerBackgroundColor: [
-        '',
-        Validators.pattern(/^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$/),
-      ],
-      cardInnerBorderColor: [
-        '',
-        Validators.pattern(/^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$/),
-      ],
-      nameColor: ['', Validators.pattern(/^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$/)],
-      labelColor: [
-        '',
-        Validators.pattern(/^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$/),
-      ],
-      valueColor: [
-        '',
-        Validators.pattern(/^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$/),
-      ],
+      screenBackgroundColor: ['', this.hexaValidationPattern],
+      cardBackgroundColor: ['', this.hexaValidationPattern],
+      cardBorderColor: ['', this.hexaValidationPattern],
+      cardInnerBackgroundColor: ['', this.hexaValidationPattern],
+      cardInnerBorderColor: ['', this.hexaValidationPattern],
+      nameColor: ['', this.hexaValidationPattern],
+      labelColor: ['', this.hexaValidationPattern],
+      valueColor: ['', this.hexaValidationPattern],
     }),
   });
 
@@ -355,6 +339,12 @@ export class PageFormComponent implements OnInit {
     }
   }
 
+  hasError(controlName: string, error: string): boolean {
+    const control = this.form.get(controlName);
+
+    return !!control && control.hasError(error) && control.touched;
+  }
+
   addService(): void {
     const service = this.serviceInput.trim();
 
@@ -375,7 +365,12 @@ export class PageFormComponent implements OnInit {
   }
 
   async save(): Promise<void> {
-    if (this.form.invalid || this.loading) {
+    if (this.loading) {
+      return;
+    }
+
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
       return;
     }
 
